@@ -1,12 +1,8 @@
-
-
-
-
 <input type="text" [(ngModel)]="newTask" placeholder="Nouvelle tâche" />
 <button (click)="addTask()">Ajouter</button>
 
 <ul>
   <li *ngFor="let task of tasks">
-    {{ task.title }}
+    {{ task.title }} <input type="checkbox" [(ngModel)]="task.done" />
   </li>
 </ul>
