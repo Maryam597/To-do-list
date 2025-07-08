@@ -1,8 +1,16 @@
-<input type="text" [(ngModel)]="newTask" placeholder="Nouvelle tâche" />
-<button (click)="addTask()">Ajouter</button>
+<form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+  <input
+    type="text"
+    name="title"
+    [(ngModel)]="newTask.title"
+    required
+    placeholder="New task"
+  />
+  <button type="submit" [disabled]="!taskForm.form.valid">Add</button>
+</form>
 
 <ul>
   <li *ngFor="let task of tasks">
-    {{ task.title }} <input type="checkbox" [(ngModel)]="task.done" />
+    {{ task.title }}
   </li>
 </ul>

@@ -1,28 +1,31 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Task } from '../models/task.model';
+import { TaskService } from '../services/task.service';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule], // ✅ Ajouté ici aussi
   templateUrl: './todo.html',
-  styleUrls: ['./todo.scss']  // Laisse comme ça si le fichier est bien là
+  styleUrls: ['./todo.scss']
 })
 export class TodoComponent {
-  tasks = [
-    { title: 'Prep liste', done: false },
-    { title: `Ajouter bouton d'ajout`, done: false },
-    { title: 'Faire un commit ', done: false }
-  ];
+  tasks: Task[] = [];
 
-  newTask = '';
+  newTask: Task = {
+    id: 0,
+    title: '',
+    completed: false
+  };
 
-  addTask() {
-    console.log("Ajout d'une tâche : ", this.newTask); // Ajoute ce log
-    if (this.newTask.trim()) {
-      this.tasks.push({ title: this.newTask, done: false });
-      this.newTask = '';
-    }
+  constructor(private taskService: TaskService) {}
+
+  onSubmit(): void {
+    this.taskService.addTask(this.newTask).subscribe((task: Task) => {
+      this.tasks.push(task);
+      this.newTask = { id: 0, title: '', completed: false };
+    });
   }
 }
