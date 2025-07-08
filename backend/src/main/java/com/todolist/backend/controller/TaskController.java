@@ -1,35 +1,38 @@
 package com.todolist.backend.controller;
+
 import com.todolist.backend.model.Task;
-import com.todolist.backend.repository.TaskRepository;
+import com.todolist.backend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/tasks")
 @CrossOrigin(origins = "http://localhost:4200")
-
-
 public class TaskController {
 
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     @GetMapping
-    public List <Task> getAllTasks(){
-        return taskRepository.findAll();
+    public List<Task> getAllTasks() {
+        return taskService.findAll();
     }
-    
-    @PostMapping("path")
-    public Task createTask(@RequestBody Task task) {        
-        return taskRepository.save(task);
+
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return taskService.save(task);
     }
-    
+
+    @DeleteMapping("/{id}")
+    public void deleteTask(@PathVariable Long id) {
+        taskService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+        task.setId(id);
+        return taskService.update(task);
+    }
 }
