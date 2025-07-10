@@ -3,6 +3,7 @@ package com.todolist.backend.controller;
 import com.todolist.backend.model.Task;
 import com.todolist.backend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,10 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.save(task);
+    public ResponseEntity<Task> createTask(@RequestBody Task task) 
+{
+    Task savedTask=taskService.save(task);
+        return ResponseEntity.ok(savedTask);
     }
 
     @DeleteMapping("/{id}")
