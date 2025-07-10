@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.HttpMethod;
 
-
 import java.util.List;
 
 @Configuration
@@ -25,28 +24,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(withDefaults())  // Active CORS
-            .csrf(csrf -> csrf.disable())  // Désactive CSRF pour les appels REST
+            .cors(withDefaults())
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/**").permitAll()        // Autorise toutes les routes API
-                .requestMatchers("/public/**").permitAll()     // Autorise l'accès aux ressources publiques
-                .requestMatchers("/admin/**").hasRole("ADMIN") // Protège les routes admin
-                .anyRequest().authenticated()                  // Le reste nécessite authentification
+                .requestMatchers(HttpMethod.POST, "/api/tasks").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/tasks/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/tasks/**").permitAll()
+                .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
             );
-            // Tu peux activer ces lignes si tu veux utiliser formLogin ou basicAuth
-            // .formLogin(withDefaults())
-            // .httpBasic(withDefaults());
-
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // autorise Angular
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Angular
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false); // ❗ false car pas d'auth par cookie
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

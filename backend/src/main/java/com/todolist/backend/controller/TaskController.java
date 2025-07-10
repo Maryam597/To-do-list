@@ -22,10 +22,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) 
-{
-    Task savedTask=taskService.save(task);
-        return ResponseEntity.ok(savedTask);
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+     System.out.println("Tâche reçue : " + task);
+        return ResponseEntity.ok(task);
     }
 
     @DeleteMapping("/{id}")
