@@ -9,6 +9,8 @@ public class Task {
     private String title;
     private boolean completed = false;
 
+    public Task() {}
+
     public Long getId() { return id; }; 
     public void setId(Long id) {this.id = id;}
 
