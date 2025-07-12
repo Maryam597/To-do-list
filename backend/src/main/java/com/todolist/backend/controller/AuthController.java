@@ -46,7 +46,7 @@ public class AuthController {
             User user = userService.findByEmail(request.getEmail())
             .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable"));
             
-            String token = jwtService.generateToken(authentication);
+            String token = jwtService.generateToken(user.getEmail());
 
             return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getEmail(), user.getRole()));
         } catch (BadCredentialsException e) {
@@ -57,6 +57,10 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<?> me (HttpServletRequest request) {
         String token = jwtService.extractTokenFromRequest(request);
+        if (token == null) {
+            return ResponseEntity.status(401).body("Token manquant ou invalide");
+        }
+        
         String username = jwtService.extractUsername(token);
         return ResponseEntity.ok("Connecté en tant que " + username);
     }

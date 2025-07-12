@@ -40,6 +40,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/users/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/tasks").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/tasks/**").permitAll()
