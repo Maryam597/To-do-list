@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,17 +37,27 @@ public class UserControllerTest {
 
 
 @Test
-public void testUserRegistration() throws Exception {
+public void testUserRegistration() {
+
+    try {
     RegisterRequest request = new RegisterRequest();
     request.setUsername("testuser");
     request.setEmail("testuser@example.com");
     request.setPassword("testpass");
+    request.setRole("USER");
+    
 
     mockMvc.perform(post("/api/users/register")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
             .andDo(print())  // <-- ici la méthode print() devient accessible
             .andExpect(status().isCreated());
+    } catch (Exception e) {
+        e.printStackTrace();
+        fail("Exception:" + e.getMessage());
+    }
+
+
 }
 
 
