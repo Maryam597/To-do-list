@@ -55,28 +55,28 @@ public class UserController {
         return ResponseEntity.status(201).body(savedUser);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        try {
-           authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    loginRequest.getEmail(),
-                    loginRequest.getPassword()
-                )
-            );
+    // @PostMapping("/login")
+    // public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    //     try {
+    //        authenticationManager.authenticate(
+    //             new UsernamePasswordAuthenticationToken(
+    //                 loginRequest.getEmail(),
+    //                 loginRequest.getPassword()
+    //             )
+    //         );
 
-        User user = userService.findByEmail(loginRequest.getEmail()).orElseThrow();
-        String token = jwtService.generateToken(user.getEmail());
+    //     User user = userService.findByEmail(loginRequest.getEmail()).orElseThrow();
+    //     String token = jwtService.generateToken(user.getEmail());
 
-        return ResponseEntity.ok().body(Map.of(
-            "token", token,
-            "username", user.getUsername(),
-            "email", user.getEmail(),
-            "role", user.getRole()
-        ));
+    //     return ResponseEntity.ok().body(Map.of(
+    //         "token", token,
+    //         "username", user.getUsername(),
+    //         "email", user.getEmail(),
+    //         "role", user.getRole()
+    //     ));
 
-        } catch (AuthenticationException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe invalide");
-        }
-    }
+    //     } catch (AuthenticationException ex) {
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe invalide");
+    //     }
+    // }
 }

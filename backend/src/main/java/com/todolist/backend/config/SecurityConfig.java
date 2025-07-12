@@ -33,24 +33,30 @@ public class SecurityConfig {
 
     
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(withDefaults())
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/users/register").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/tasks").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/tasks/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/tasks/**").permitAll()
-                .requestMatchers("/public/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            );
-        return http.build();
-    }
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .cors(withDefaults())
+        .csrf(csrf -> csrf.disable())
+        .requestCache(cache -> cache.disable())
+        .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers("/api/users/register").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/auth/login**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/login**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/tasks").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
+            .requestMatchers(HttpMethod.PUT, "/api/tasks/**").permitAll()
+            .requestMatchers(HttpMethod.DELETE, "/api/tasks/**").permitAll()
+            .requestMatchers("/public/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        )
+        .formLogin(login -> login.disable())
+        .httpBasic(basic -> basic.disable());
+
+    return http.build();
+}
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
