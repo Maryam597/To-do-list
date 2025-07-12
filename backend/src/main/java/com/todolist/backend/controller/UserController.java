@@ -1,12 +1,11 @@
 package com.todolist.backend.controller;
 
+import com.todolist.backend.dto.RegisterRequest;
 import com.todolist.backend.model.User;
 import com.todolist.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -17,24 +16,24 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        if (userService.findByEmail(user.getEmail()).isPresent()) {
-
-            return ResponseEntity.badRequest().body("cet email est déjà utilisé.");
-        }
-
-         if (userService.findByUsername(user.getUsername()).isPresent()) {
-
-            return ResponseEntity.badRequest().body("ce nom d'utilisateur est déjà utilisé.");
-        }
-
-
-
-
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.status(201).body(savedUser);
+@PostMapping("/register")
+public ResponseEntity<?> createUser(@RequestBody RegisterRequest registerRequest) {
+    if (userService.findByEmail(registerRequest.getEmail()).isPresent()) {
+        return ResponseEntity.badRequest().body("Cet email est déjà utilisé.");
     }
+    if (userService.findByUsername(registerRequest.getUsername()).isPresent()) {
+        return ResponseEntity.badRequest().body("Ce nom d'utilisateur est déjà utilisé.");
+    }
+
+    User user = new User();
+    user.setUsername(registerRequest.getUsername());
+    user.setEmail(registerRequest.getEmail());
+    user.setPassword(registerRequest.getPassword());
+
+    User savedUser = userService.saveUser(user);
+    return ResponseEntity.status(201).body(savedUser);
+}
+
 
     }
     

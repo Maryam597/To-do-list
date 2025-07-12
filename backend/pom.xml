@@ -53,6 +53,13 @@
     <scope>test</scope>
 </dependency>
 
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.38</version> <!-- Vérifie que la version correspond -->
+    <scope>provided</scope>
+</dependency>
+
 
         <dependency>
             <groupId>com.mysql</groupId>

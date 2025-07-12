@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.ActiveProfiles;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,18 +35,20 @@ public class UserControllerTest {
     private AuthenticationManager authenticationManager;
 
 
-    @Test
-    public void testUserRegistration() throws Exception {
-User request = new User();
-request.setUsername("testuser");
-request.setEmail("testuser@example.com");
-request.setPassword("testpass");
+@Test
+public void testUserRegistration() throws Exception {
+    RegisterRequest request = new RegisterRequest();
+    request.setUsername("testuser");
+    request.setEmail("testuser@example.com");
+    request.setPassword("testpass");
 
-mockMvc.perform(post("/api/users/register")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isCreated());
-    }
+    mockMvc.perform(post("/api/users/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+            .andDo(print())  // <-- ici la méthode print() devient accessible
+            .andExpect(status().isCreated());
+}
+
 
     // @Test
     // public void testUserLogin() throws Exception {
