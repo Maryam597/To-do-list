@@ -39,7 +39,7 @@ public class SecurityConfig {
             .cors(withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/users").permitAll()
+                .requestMatchers("/api/users/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/tasks").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/tasks/**").permitAll()
