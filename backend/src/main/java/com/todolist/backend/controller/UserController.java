@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     
     @Autowired
     private UserService userService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         if (userService.findByEmail(user.getEmail()).isPresent()) {
 
