@@ -2,6 +2,8 @@ package com.todolist.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 
 @Entity
@@ -22,5 +24,8 @@ public class User {
     private String password;
 
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Task> tasks;
     
 }

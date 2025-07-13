@@ -36,9 +36,10 @@ public class UserController {
             return ResponseEntity.badRequest().body("Cet email est déjà utilisé.");
         }
 
-        if (userService.findByUsername(registerRequest.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body("Ce nom d'utilisateur est déjà utilisé.");
-        }
+        if (userService.findByUsername(registerRequest.getUsername()) != null) {
+    return ResponseEntity.badRequest().body("Ce nom d'utilisateur est déjà utilisé.");
+}
+
 
         User user = new User();
         user.setUsername(registerRequest.getUsername());
