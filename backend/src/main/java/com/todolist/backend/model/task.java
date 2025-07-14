@@ -1,6 +1,7 @@
 package com.todolist.backend.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -26,9 +27,9 @@ public class Task {
     private boolean completed = false;
 
 
-    @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("tasks")
+    @ManyToOne
     private User user;
 
     public Task() {}
