@@ -4,7 +4,10 @@ import lombok.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 
@@ -36,9 +39,12 @@ public class User {
         this.role = role;
     }
 
+// @JsonManagedReference
 
-@OneToMany(mappedBy = "user")
+@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 @JsonManagedReference
-    private List<Task> tasks;
+private List<Task> tasks;
+
+
     
 }

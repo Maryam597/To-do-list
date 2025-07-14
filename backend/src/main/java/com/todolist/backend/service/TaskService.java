@@ -14,9 +14,9 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
-    }
+    // public List<Task> findAll() {
+    //     return taskRepository.findAll();
+    // }
 
     public List<Task> findByUserId(Long userId) {
         return taskRepository.findByUserId(userId);
