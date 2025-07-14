@@ -4,6 +4,8 @@ import lombok.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
@@ -25,7 +27,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    
+
         public Role getRole() {
         return role;
     }
@@ -35,7 +37,8 @@ public class User {
     }
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "user")
+@JsonManagedReference
     private List<Task> tasks;
     
 }

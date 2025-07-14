@@ -3,6 +3,9 @@ package com.todolist.backend.controller;
 import com.todolist.backend.model.Task;
 import com.todolist.backend.model.User;
 import com.todolist.backend.service.TaskService;
+
+import jakarta.validation.Valid;
+
 import com.todolist.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,6 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
-    // Récupère toutes les tâches (à filtrer par utilisateur plus tard si nécessaire)
     @GetMapping
         public ResponseEntity<List<Task>> getTasksByUser(Principal principal) {
         String userEmail = principal.getName(); // Email extrait du JWT via Spring Security
@@ -39,7 +41,7 @@ public class TaskController {
 
     // Crée une nouvelle tâche et l’associe à l’utilisateur connecté
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task, Principal principal) {
+    public ResponseEntity<Task> createTask(@Valid @RequestBody Task task, Principal principal) {
         String userEmail = principal.getName(); // Email extrait du JWT via Spring Security
 
         User user = userRepository.findByEmail(userEmail)
@@ -59,7 +61,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
         task.setId(id);
         return taskService.update(task);
     }

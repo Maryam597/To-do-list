@@ -15,6 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.todolist.backend.security.JwtAuthenticationFilter;
+import com.todolist.backend.security.CustomAuthenticationEntryPoint;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +31,10 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    
+    @Autowired
+private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
 
     // Bean AuthenticationManager exposé explicitement
     @Bean
@@ -44,17 +49,14 @@ public class SecurityConfig {
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+        .exceptionHandling(exception -> exception
+            .authenticationEntryPoint(customAuthenticationEntryPoint)
+        )
         .cors(withDefaults())
         .csrf(csrf -> csrf.disable())
         .requestCache(cache -> cache.disable())
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/api/users/register").permitAll()
-            .requestMatchers(HttpMethod.OPTIONS, "/auth/login**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/login**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/tasks").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
-            .requestMatchers(HttpMethod.PUT, "/api/tasks/**").permitAll()
-            .requestMatchers(HttpMethod.DELETE, "/api/tasks/**").permitAll()
+            .requestMatchers("/api/auth/**", "/api/users/register", "/error").permitAll()
             .requestMatchers("/public/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
@@ -62,10 +64,12 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         .formLogin(login -> login.disable())
         .httpBasic(basic -> basic.disable());
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
 }
+
+
 
 
     @Bean
