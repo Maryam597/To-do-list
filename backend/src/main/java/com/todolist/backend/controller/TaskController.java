@@ -25,8 +25,16 @@ public class TaskController {
 
     // Récupère toutes les tâches (à filtrer par utilisateur plus tard si nécessaire)
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.findAll();
+        public ResponseEntity<List<Task>> getTasksByUser(Principal principal) {
+        String userEmail = principal.getName(); // Email extrait du JWT via Spring Security
+
+        User user = userRepository.findByEmail(userEmail)
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        List<Task> tasks = taskService.findByUserId(user.getId());
+
+        return ResponseEntity.ok(tasks);
+
     }
 
     // Crée une nouvelle tâche et l’associe à l’utilisateur connecté

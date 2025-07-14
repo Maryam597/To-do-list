@@ -48,7 +48,7 @@ public class AuthController {
             
             String token = jwtService.generateToken(user.getEmail());
 
-            return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getEmail(), user.getRole()));
+            return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getEmail()));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Identifiants invalides");
         }
@@ -78,7 +78,6 @@ public class AuthController {
         private String token ;
         private String username;
         private String email;
-        private String role;
     }
     
     }

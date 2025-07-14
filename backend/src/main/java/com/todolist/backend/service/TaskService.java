@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -17,15 +18,32 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+    public List<Task> findByUserId(Long userId) {
+        return taskRepository.findByUserId(userId);
+    }
+
+
     public Task save(Task task) {
         return taskRepository.save(task);
     }
 
     public void delete(Long id) {
+        if(!taskRepository.existsById(id)) {
+            throw new RuntimeException("Tâche non trouvée avec " + id);
+        }
         taskRepository.deleteById(id);
     }
 
     public Task update(Task task) {
+        if(task.getId() == null) {
+            throw new RuntimeException("Id de la tâche nécessaire pour modifier ");
+        }
+
+        Optional<Task> existing = taskRepository.findById(task.getId());
+        if(!existing.isPresent()) {
+            throw new RuntimeException("Tâche non trouvée avec l'id" + task.getId());
+        }
+
         return taskRepository.save(task);
     }
 }
