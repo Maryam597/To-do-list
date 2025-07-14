@@ -23,7 +23,17 @@ public class User {
     
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    
+        public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks;
