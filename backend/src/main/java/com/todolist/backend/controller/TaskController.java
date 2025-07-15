@@ -46,24 +46,32 @@ public class TaskController {
         User user = userRepository.findByEmail(userEmail)
             .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        List<Task> tasks = taskService.findByUserId(user.getId());
+        List<Task> task = taskService.findByUserId(user.getId());
 
         return ResponseEntity.ok(
-            tasks.stream().map(this::convertToDTO).collect(Collectors.toList())
+            task.stream().map(this::convertToDTO).collect(Collectors.toList())
         );
     }
 
-    @PostMapping
-    public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody Task task, Principal principal) {
-        String userEmail = principal.getName();
-        User user = userRepository.findByEmail(userEmail)
-            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+    @PostMapping(consumes = "application/json")
+public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody Task task, Principal principal) {
+    // Récupérer l'email de l'utilisateur connecté
+    String userEmail = principal.getName();
 
-        task.setUser(user);
-        Task savedTask = taskService.save(task);
+    // Récupérer l'utilisateur depuis la base
+    User user = userRepository.findByEmail(userEmail)
+        .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        return ResponseEntity.ok(convertToDTO(savedTask));
-    }
+    // Associer l'utilisateur à la tâche (important pour la relation en BDD)
+    task.setUser(user);
+
+    // Sauvegarder la tâche
+    Task savedTask = taskService.save(task);
+
+    // Retourner une version DTO (côté client)
+    return ResponseEntity.ok(convertToDTO(savedTask));
+}
+
 
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {

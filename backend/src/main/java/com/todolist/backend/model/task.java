@@ -1,23 +1,19 @@
 package com.todolist.backend.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-
 @Entity
+@Table(name = "task")
 public class Task {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
 
-
-    @NotBlank(message =  "Le titre est obligatoire")
+    @NotBlank(message = "Le titre est obligatoire")
     @Size(min = 3, max = 100, message = "Le titre doit contenir entre 3 et 100 caractères")
     private String title;
 
@@ -26,27 +22,53 @@ public class Task {
 
     private boolean completed = false;
 
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "user_id")
+@JsonBackReference("user-task")
+private User user;
 
-    @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties("tasks")
-    @ManyToOne
-    private User user;
 
     public Task() {}
 
-    public Long getId() { return id; }; 
-    public void setId(Long id) {this.id = id;}
+    // Getters & setters
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) {this.title = title;}
+    public Long getId() {
+        return id;
+    }
 
-    public boolean isCompleted() { return completed; }
-    public void setCompleted(boolean completed) { this.completed = completed;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public User getUser() {return user;}
-    public void setUser(User user) { this.user = user; }
+    public String getTitle() {
+        return title;
+    }
 
-    public String getDescription() {return description;}
-    public void setDescription(String description) { this.description = description; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

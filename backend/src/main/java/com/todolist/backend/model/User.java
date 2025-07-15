@@ -1,15 +1,12 @@
 package com.todolist.backend.model;
+
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-
 
 @Entity
 @Table(name= "users")
@@ -18,33 +15,22 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @AllArgsConstructor
 public class User {
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
     private String username;
 
-    private String email; 
-    
+    private String email;
+
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-        public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-// @JsonManagedReference
-
 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-@JsonManagedReference
-private List<Task> tasks;
+@JsonManagedReference("user-task")
+private List<Task> task = new ArrayList<>();
 
-
-    
 }
