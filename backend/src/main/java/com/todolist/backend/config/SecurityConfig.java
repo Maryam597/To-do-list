@@ -56,7 +56,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         .csrf(csrf -> csrf.disable())
         .requestCache(cache -> cache.disable())
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/api/auth/**", "/api/users/register", "/error").permitAll()
+            .requestMatchers("/auth/**", "/api/users/register", "/error").permitAll()
             .requestMatchers("/public/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
