@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
-import { TodoComponent } from './todo/todo';
+import { Login } from './auth/login/login';
+import { Tasks } from './tasks/tasks'
+import { authGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: TodoComponent
-  }
+  { path: 'login', component: Login },
+  { path: 'tasks', component: Tasks, canActivate: [authGuard] },
+  { path: 'register', component: Login },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
 ];
