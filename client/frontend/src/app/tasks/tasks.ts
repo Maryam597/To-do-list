@@ -21,9 +21,12 @@ export class Tasks implements OnInit {
     this.loadTasks();
   }
 
-  loadTasks() {
-    this.taskService.getTasks().subscribe(tasks => this.tasks = tasks);
-  }
+loadTasks() {
+  this.taskService.getTasks().subscribe(tasks => {
+    console.log("Tâches récupérées :", tasks);
+    this.tasks = tasks;
+  });
+}
 
   addTask() {
     if (!this.newTask.title.trim()) return;
@@ -33,9 +36,13 @@ export class Tasks implements OnInit {
     });
   }
 
-  updateTask(task: Task) {
-    this.taskService.updateTask(task).subscribe(() => this.loadTasks());
-  }
+updateTask(task: Task) {
+  this.taskService.updateTask(task).subscribe(() => {
+    // Pas de this.loadTasks();
+    console.log("Tâche mise à jour localement :", task);
+  });
+}
+
 
   deleteTask(task: Task) {
     if (confirm(`Supprimer la tâche "${task.title}" ?`)) {
