@@ -4,8 +4,10 @@ import { Component } from '@angular/core';
   selector: 'app-tasks',
   imports: [],
   templateUrl: './tasks.html',
-  styleUrl: './tasks.scss'
+  styleUrls: ['./tasks.scss']
 })
 export class Tasks {
 
 }
+
+

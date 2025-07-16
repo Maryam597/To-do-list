@@ -7,12 +7,12 @@ import { Router } from '@angular/router';
 })
 export class Auth {
 
-  private apiUrl = "http://localhost:8080/api/auth"
+  private apiUrl = "http://localhost:8080"
 
   constructor(private http: HttpClient, private router: Router) { }
 
   login(data: { email: string; password: string}) {
-    return this.http.post(`${this.apiUrl}/signin`, data);
+    return this.http.post(`${this.apiUrl}/login`, data);
   }
 
   register(data: { username: string; email: string; password: string}) {
