@@ -32,13 +32,6 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
-    // @GetMapping("/tasks")
-    // public List<TaskDTO> getAllTasks() {
-    //     List<Task> tasks = taskRepository.findAll();
-    //     return tasks.stream()
-    //         .map(this::convertToDTO)
-    //         .collect(Collectors.toList());
-    // }
 
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getTasksByUser(Principal principal) {

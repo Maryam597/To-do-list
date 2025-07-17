@@ -1,18 +1,21 @@
 .home-container {
+  width: 100%;
   max-width: 600px;
-  margin: 2rem auto;
   padding: 2rem;
-  background: #f8f1e4; /* beige clair */
+  background: #f8f1e4;
   font-family: 'Roboto', sans-serif;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  position: relative;
-//   background-image: url('assets/kraft-texture.png'); /* à ajouter dans assets */
   background-size: cover;
-  // height: 100vh; /* 100% de la hauteur de la fenêtre */
+
   display: flex;
   flex-direction: column;
+  align-items: center;
+  position: relative;
 }
+
+
+
 
 
 

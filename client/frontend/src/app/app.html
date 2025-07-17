@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar">
+  <nav>
     <a routerLink="/">Accueil</a> 
     <a routerLink="/tasks">Voir mes tâches</a> 
     <a routerLink="/login">Se connecter</a> 
@@ -7,8 +7,6 @@
   </nav>
 </header>
 
-<main>
-  <div class="page-container">
-    <router-outlet></router-outlet>
-  </div>
+<main [ngClass]="{ 'center-content': router.url === '/' }">
+  <router-outlet></router-outlet>
 </main>

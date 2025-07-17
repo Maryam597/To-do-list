@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TodoComponent } from './todo/todo';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common'; // ✅ à importer pour ngClass
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [TodoComponent, RouterModule],
+  imports: [CommonModule, TodoComponent, RouterModule],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
-
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(public router: Router) {}
+}
