@@ -7,8 +7,10 @@
 <ul>
   <li *ngFor="let task of tasks" [class.completed]="task.completed">
     <input type="checkbox" [(ngModel)]="task.completed" (change)="updateTask(task)" />
+    
     <input [(ngModel)]="task.title" (blur)="updateTask(task)" />
     <input [(ngModel)]="task.description" (blur)="updateTask(task)" />
+
     <button (click)="deleteTask(task)">❌</button>
   </li>
 </ul>

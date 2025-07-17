@@ -1,4 +1,6 @@
-.completed {
+.completed input[type="text"],
+.completed input[type="checkbox"] + input,
+.completed input[type="checkbox"] + input + input {
   text-decoration: line-through;
-  opacity: 0.6;
+  color: gray;
 }

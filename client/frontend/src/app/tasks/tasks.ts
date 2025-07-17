@@ -13,7 +13,11 @@ import { CommonModule } from '@angular/common';
 })
 export class Tasks implements OnInit {
   tasks: Task[] = [];
-  newTask: Task = { title: '', completed: false };
+  newTask: Task = {
+    title: '',
+    description: '',
+    completed: false
+  };
 
   constructor(private taskService: TaskService) {}
 
@@ -21,28 +25,34 @@ export class Tasks implements OnInit {
     this.loadTasks();
   }
 
-loadTasks() {
-  this.taskService.getTasks().subscribe(tasks => {
-    console.log("Tâches récupérées :", tasks);
-    this.tasks = tasks;
-  });
-}
-
-  addTask() {
-    if (!this.newTask.title.trim()) return;
-    this.taskService.addTask(this.newTask).subscribe(() => {
-      this.newTask = { title: '', completed: false };
-      this.loadTasks();
+  loadTasks() {
+    this.taskService.getTasks().subscribe(tasks => {
+      console.log("Tâches récupérées :", tasks);
+      this.tasks = tasks;
     });
   }
 
-updateTask(task: Task) {
-  this.taskService.updateTask(task).subscribe(() => {
-    // Pas de this.loadTasks();
-    console.log("Tâche mise à jour localement :", task);
-  });
-}
+  addTask() {
+    if (!this.newTask.title || !this.newTask.description) {
+      return;
+    }
 
+    this.taskService.addTask(this.newTask).subscribe(
+      () => {
+        this.newTask = { id: undefined, title: '', description: '', completed: false };
+        this.loadTasks(); // ✅ Recharge toute la liste après ajout
+      },
+      (error) => {
+        console.error('Erreur lors de l’ajout de la tâche', error);
+      }
+    );
+  }
+
+  updateTask(task: Task) {
+    this.taskService.updateTask(task).subscribe(() => {
+      console.log("Tâche mise à jour :", task);
+    });
+  }
 
   deleteTask(task: Task) {
     if (confirm(`Supprimer la tâche "${task.title}" ?`)) {

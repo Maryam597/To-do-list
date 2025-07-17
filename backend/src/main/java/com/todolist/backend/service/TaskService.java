@@ -2,6 +2,9 @@ package com.todolist.backend.service;
 
 import com.todolist.backend.model.Task;
 import com.todolist.backend.repository.TaskRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class TaskService {
 
     @Autowired

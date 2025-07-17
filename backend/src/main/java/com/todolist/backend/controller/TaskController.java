@@ -53,24 +53,22 @@ public class TaskController {
         );
     }
 
-    @PostMapping(consumes = "application/json")
-public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody Task task, Principal principal) {
-    // Récupérer l'email de l'utilisateur connecté
-    String userEmail = principal.getName();
+    @PostMapping
+public ResponseEntity<TaskDTO> createTask(@RequestBody Task task, Principal principal) {
+    if (task.getTitle() == null || task.getTitle().trim().isEmpty()) {
+        return ResponseEntity.badRequest().build();
+    }
 
-    // Récupérer l'utilisateur depuis la base
+    String userEmail = principal.getName();
     User user = userRepository.findByEmail(userEmail)
         .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-    // Associer l'utilisateur à la tâche (important pour la relation en BDD)
     task.setUser(user);
 
-    // Sauvegarder la tâche
     Task savedTask = taskService.save(task);
-
-    // Retourner une version DTO (côté client)
     return ResponseEntity.ok(convertToDTO(savedTask));
 }
+
 
 
     @DeleteMapping("/{id}")
