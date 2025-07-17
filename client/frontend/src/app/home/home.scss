@@ -1,0 +1,100 @@
+.home-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f8f1e4; /* beige clair */
+  font-family: 'Roboto', sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
+//   background-image: url('assets/kraft-texture.png'); /* à ajouter dans assets */
+  background-size: cover;
+}
+
+.logo {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 2rem;
+  color: #4a6542; /* vert sauge */
+  text-align: center;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+h1 {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.8rem;
+  color: #3c4a34; /* vert mousse */
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #6a8a45; /* vert sauge foncé */
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #527032;
+}
+
+.btn-secondary {
+  background-color: #c9b68b; /* brun clair */
+  color: #3c4a34;
+}
+
+.btn-secondary:hover {
+  background-color: #a8935c;
+}
+
+.quote {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  text-align: center;
+  color: #5a4a2b;
+  border-left: 4px solid #8b7a44;
+  padding-left: 1rem;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+footer {
+  text-align: center;
+  color: #8b7a44;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+}
+
+/* Optionnel : petites feuilles en décor */
+.home-container::before {
+  content: "🍃";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 2rem;
+  opacity: 0.3;
+}
+
+.home-container::after {
+  content: "🌿";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 2rem;
+  opacity: 0.3;
+}
