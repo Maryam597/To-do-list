@@ -3,6 +3,7 @@ package com.todolist.backend.service;
 import com.todolist.backend.model.Task;
 import com.todolist.backend.repository.TaskRepository;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+private EntityManager entityManager; 
 
     // public List<Task> findAll() {
     //     return taskRepository.findAll();
@@ -27,9 +30,15 @@ public class TaskService {
     }
 
 
-    public Task save(Task task) {
-        return taskRepository.save(task);
-    }
+public Task save(Task task) {
+    Task savedTask = taskRepository.save(task);
+    taskRepository.flush(); // Force l'écriture immédiate
+    System.out.println("Tâche insérée avec ID : " + savedTask.getId());
+    return savedTask;
+}
+
+
+
 
     public void delete(Long id) {
         if(!taskRepository.existsById(id)) {
