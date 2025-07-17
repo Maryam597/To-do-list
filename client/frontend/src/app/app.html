@@ -1,8 +1,14 @@
-<nav>
-  <a routerLink="/">Accueil</a> 
-  <a routerLink="/tasks">Voir mes tâches</a> 
-  <a routerLink="/login">Se connecter</a> 
-  <a routerLink="/register">Créer un compte</a>
-</nav>
+<header>
+  <nav class="navbar">
+    <a routerLink="/">Accueil</a> 
+    <a routerLink="/tasks">Voir mes tâches</a> 
+    <a routerLink="/login">Se connecter</a> 
+    <a routerLink="/register">Créer un compte</a>
+  </nav>
+</header>
 
-<router-outlet></router-outlet>
+<main>
+  <div class="page-container">
+    <router-outlet></router-outlet>
+  </div>
+</main>

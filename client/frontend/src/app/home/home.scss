@@ -9,7 +9,15 @@
   position: relative;
 //   background-image: url('assets/kraft-texture.png'); /* à ajouter dans assets */
   background-size: cover;
+  // height: 100vh; /* 100% de la hauteur de la fenêtre */
+  display: flex;
+  flex-direction: column;
 }
+
+
+
+
+
 
 .logo {
   font-family: 'Patrick Hand', cursive;

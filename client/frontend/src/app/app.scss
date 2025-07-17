@@ -1,9 +1,20 @@
 nav {
  display: flex;
+ justify-content: flex-end;
 }
 
 a {
     text-decoration: none;
     color: black;
-    padding: 20px;
+    padding: 15px;
+    font-family: "Delius", cursive;
+  font-weight: 400;
+  font-style: normal;
+  color: #64522d; 
+
+}
+
+
+main {
+    display: flex;
 }
