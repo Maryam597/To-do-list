@@ -33,9 +33,9 @@
 
 <div id="calendar-button">
   <div class="calendar-controls">
-    <button *ngIf="isToday || isTomorrow" (click)="changeDay(-1)">⬅️ Hier</button>
+    <button *ngIf="isToday || isTomorrow" (click)="changeDay(-1)">Hier</button>
     <span>{{ today | date: 'EEEE d MMMM' }}</span>
-    <button *ngIf="isToday || isYesterday" (click)="changeDay(1)">Demain ➡️</button>
+    <button *ngIf="isToday || isYesterday" (click)="changeDay(1)">Demain </button>
   </div>
 
   <!-- Datepicker -->

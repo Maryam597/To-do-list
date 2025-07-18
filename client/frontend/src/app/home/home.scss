@@ -214,6 +214,8 @@ h1 {
   animation: fadeInSlide 1s ease-in-out;
 }
 
+
+
 #calendar-button::before {
   content: "🍂";
   position: absolute;
@@ -282,3 +284,36 @@ mat-label {
   color: #6d5d3e;
 }
 
+::ng-deep .mat-datepicker-content {
+  background-color: #fdfaf4;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+::ng-deep .mat-datepicker-popup {
+  border-radius: 15px;
+}
+
+::ng-deep .mat-calendar {
+  border-radius: 15px;
+}
+
+::ng-deep .mat-calendar {
+  background-color: #e9cf9d;
+  color: #4a6542 !important; 
+  font-weight: bold;
+  font-family: 'Indie Flower', cursive;
+}
+
+::ng-deep .mat-calendar-table .mat-calendar-body-label {
+  display: none; // supprime l'étiquette du mois répétée
+}
+
+::ng-deep .mat-calendar-body-today {
+  border: 2px solid #6b8e23; // vert nature
+  border-radius: 50%;
+  background-color: #e8f5e9; // vert très clair
+  color: #2e5d34 !important;
+  font-weight: bold;
+}

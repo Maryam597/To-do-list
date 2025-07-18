@@ -1,1 +1,59 @@
-<p>register works!</p>
+<div class="register-container">
+  <h2>🌱 Inscription</h2>
+
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nom d'utilisateur</mat-label>
+      <input
+        matInput
+        name="username"
+        [(ngModel)]="registerData.username"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        name="email"
+        [(ngModel)]="registerData.email"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Mot de passe</mat-label>
+      <input
+        matInput
+        type="password"
+        name="password"
+        [(ngModel)]="registerData.password"
+        required
+      />
+    </mat-form-field>
+
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="!registerForm.form.valid"
+    >
+      🌿 S'inscrire
+    </button>
+
+    <button
+      type="button"
+      mat-button
+      routerLink="/login"
+      class="btn-link"
+    >
+      J'ai déjà un compte
+    </button>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+  </form>
+</div>
