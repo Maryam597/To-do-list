@@ -16,7 +16,16 @@
 
 
 #calendar-button {
-  margin: 50px;
+background-color: #f9f6ef;
+  border: 2px solid #d0c4a8;
+  padding: 1.5rem;
+  margin: 2rem auto;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  text-align: center;
+  font-family: "Delius", cursive;
 }
 
 
@@ -154,3 +163,122 @@ h1 {
 .features li {
   margin-bottom: 0.5rem;
 }
+
+
+.calendar-controls button {
+  background-color: #d7c9a5;
+  color: #3d2d14;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-family: "Delius", cursive;
+  cursor: pointer;
+}
+
+.calendar-controls span {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.today-tasks {
+  margin-top: 1.5rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.today-tasks h3 {
+  font-size: 1.1rem;
+  color: #64522d;
+  font-family: "Delius", cursive;
+}
+
+.today-tasks li {
+  margin-bottom: 0.5rem;
+}
+
+/* Calendrier stylisé nature/carnet */
+#calendar-button {
+  background-color: #f3eddc;
+  border: 2px solid #d0c4a8;
+  padding: 2rem;
+  margin: 50px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  width: 90%;
+  font-family: 'Indie Flower', cursive;
+  color: #3c4a34;
+  text-align: center;
+  position: relative;
+  animation: fadeInSlide 1s ease-in-out;
+}
+
+#calendar-button::before {
+  content: "🍂";
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 1.8rem;
+  opacity: 0.3;
+}
+#calendar-button::after {
+  content: "🍃";
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 1.8rem;
+  opacity: 0.3;
+}
+
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-controls button {
+  background-color: #c9b68b;
+  color: #3c2f1c;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-family: 'Delius', cursive;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-controls button:hover {
+  background-color: #b79e6a;
+}
+
+.calendar-controls span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #4a6542;
+  font-family: 'Patrick Hand', cursive;
+}
+
+mat-form-field {
+  width: 100%;
+  background-color: #fffdf5;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+mat-label {
+  color: #4a6542;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1rem;
+}
+
+/* Citation décorative */
+#calendar-button em {
+  display: block;
+  margin: 1rem 0;
+  font-style: italic;
+  font-family: 'Lora', serif;
+  color: #6d5d3e;
+}
+

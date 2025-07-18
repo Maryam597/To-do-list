@@ -31,15 +31,37 @@
  
 </div>
 
- <div id="calendar-button">
-  <div class="daily-note">
-  📅 <strong>Aujourd’hui :</strong> <span>{{ today | date:'EEEE d MMMM' }}</span><br>
-  ✨ <em>“Faites de votre journée une belle histoire.”</em>
+<div id="calendar-button">
+  <div class="calendar-controls">
+    <button *ngIf="isToday || isTomorrow" (click)="changeDay(-1)">⬅️ Hier</button>
+    <span>{{ today | date: 'EEEE d MMMM' }}</span>
+    <button *ngIf="isToday || isYesterday" (click)="changeDay(1)">Demain ➡️</button>
+  </div>
+
+  <!-- Datepicker -->
+  <mat-form-field appearance="fill">
+    <mat-label>Choisir une date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <div>
+    ✨ <em>“Faites de votre journée une belle histoire.”</em>
+  </div>
+
+  <a routerLink="/signup" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a>
+</div>
+
+<!-- Tâches du jour -->
+<div class="today-tasks">
+  <h3>📋 Tâches du jour</h3>
+  <ul>
+    <!-- TODO : Afficher les tâches ici -->
+  </ul>
 </div>
 
 
-<a routerLink="/signup" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a>
 
 </div>
 
-</div>
