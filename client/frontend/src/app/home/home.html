@@ -1,7 +1,12 @@
+<div id="large-container">
 <div class="home-container">
+  
+  <div id="main-container">
   <header>
     <div class="logo">🌿 Mon Carnet Nature</div>
   </header>
+
+
 
   <h1>Organisez vos journées, cultivez vos idées.</h1>
 
@@ -14,7 +19,27 @@
     “Chaque jour est une nouvelle page à écrire.”
   </blockquote>
 
-  <footer>
-    <small>© 2025 Carnet Nature</small>
-  </footer>
+
+
+<ul class="features">
+  <li>🪴 Organisez vos tâches naturellement</li>
+  <li>📖 Gardez vos idées au chaud</li>
+  <li>🌸 Prenez soin de votre esprit</li>
+</ul>
+</div>
+
+ 
+</div>
+
+ <div id="calendar-button">
+  <div class="daily-note">
+  📅 <strong>Aujourd’hui :</strong> <span>{{ today | date:'EEEE d MMMM' }}</span><br>
+  ✨ <em>“Faites de votre journée une belle histoire.”</em>
+</div>
+
+
+<a routerLink="/signup" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a>
+
+</div>
+
 </div>

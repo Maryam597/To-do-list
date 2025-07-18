@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common'; // ✅ à importer pour ngClass
   styleUrl: './home.scss'
 })
 export class Home {
+  today: Date = new Date();
+  constructor() {}
 
 }
 export class AppComponent {

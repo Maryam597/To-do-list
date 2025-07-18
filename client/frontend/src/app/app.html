@@ -1,12 +1,18 @@
-<header>
-  <nav>
-    <a routerLink="/">Accueil</a> 
-    <a routerLink="/tasks">Voir mes tâches</a> 
-    <a routerLink="/login">Se connecter</a> 
-    <a routerLink="/register">Créer un compte</a>
-  </nav>
-</header>
+<div class="page-wrapper">
+  <header>
+    <nav>
+      <a routerLink="/">Accueil</a> 
+      <a routerLink="/tasks">Voir mes tâches</a> 
+      <a routerLink="/login">Se connecter</a> 
+      <a routerLink="/register">Créer un compte</a>
+    </nav>
+  </header>
 
-<main [ngClass]="{ 'center-content': router.url === '/' }">
-  <router-outlet></router-outlet>
-</main>
+  <main [ngClass]="{ 'center-content': router.url === '/' }">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer>
+    <small>© 2025 Carnet Nature</small>
+  </footer>
+</div>

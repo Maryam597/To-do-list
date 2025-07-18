@@ -1,6 +1,6 @@
 .home-container {
   width: 100%;
-  max-width: 600px;
+  // max-width: 600px;
   padding: 2rem;
   background: #f8f1e4;
   font-family: 'Roboto', sans-serif;
@@ -15,9 +15,14 @@
 }
 
 
+#calendar-button {
+  margin: 50px;
+}
 
 
-
+#large-container {
+  display: flex;
+}
 
 
 
@@ -80,15 +85,8 @@ h1 {
   color: #5a4a2b;
   border-left: 4px solid #8b7a44;
   padding-left: 1rem;
-  margin: 0 auto;
+  margin-bottom: 20px;
   max-width: 400px;
-}
-
-footer {
-  text-align: center;
-  color: #8b7a44;
-  font-size: 0.9rem;
-  margin-top: 3rem;
 }
 
 /* Optionnel : petites feuilles en décor */
@@ -108,4 +106,51 @@ footer {
   right: 10px;
   font-size: 2rem;
   opacity: 0.3;
+}
+
+
+#newpage-btn {
+  display: flex;
+}
+
+
+.daily-note {
+  background-color: #fffdf5;
+  border-left: 4px solid #c9b68b;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  font-family: 'Indie Flower', cursive;
+  color: #4a6542;
+  font-size: 1rem;
+  text-align: left;
+  width: 100%;
+  border-radius: 10px;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1 {
+  animation: fadeInSlide 1.2s ease-out;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  color: #4a6542;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.features li {
+  margin-bottom: 0.5rem;
 }

@@ -9,7 +9,7 @@ form {
 
 input {
   padding: 0.8rem 1rem;
-  border: 2px solid #c9b68b; /* brun clair */
+  border: 2px solid #c9b68b; 
   border-radius: 25px;
   font-size: 1rem;
   font-family: 'Roboto', sans-serif;
@@ -19,13 +19,13 @@ input {
 
 input[type="email"]:focus,
 input[type="password"]:focus {
-  border-color: #6a8a45; /* vert sauge foncé */
+  border-color: #6a8a45; 
   box-shadow: 0 0 5px rgba(106, 138, 69, 0.5);
 }
 
 button[type="submit"] {
   padding: 0.8rem 1.5rem;
-  background-color: #6a8a45; /* vert sauge foncé */
+  background-color: #6a8a45; 
   color: white;
   border: none;
   border-radius: 25px;
