@@ -18,6 +18,7 @@ public class Task {
     private String title;
 
     @Size(max = 500, message = "La description doit contenir 500 caractères")
+    @Column(nullable = true)
     private String description;
 
     private boolean completed = false;

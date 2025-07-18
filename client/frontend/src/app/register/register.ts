@@ -12,7 +12,6 @@ import { RouterModule } from '@angular/router';
   imports: [    
     CommonModule,
     FormsModule,
-    // HttpClientModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,

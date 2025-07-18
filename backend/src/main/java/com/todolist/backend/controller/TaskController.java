@@ -52,11 +52,16 @@ public ResponseEntity<TaskDTO> createTask(@RequestBody Task task, Principal prin
         return ResponseEntity.badRequest().build();
     }
 
+
+    if (task.getDescription() == null) {
+    task.setDescription("");
+}
     String userEmail = principal.getName();
     User user = userRepository.findByEmail(userEmail)
         .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
     task.setUser(user);
+
 
     Task savedTask = taskService.save(task);
     return ResponseEntity.ok(convertToDTO(savedTask));
