@@ -43,7 +43,6 @@ public class Task {
     public Task() {
     }
 
-    // Getters & setters
 
     public Long getId() {
         return id;

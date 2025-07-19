@@ -50,6 +50,8 @@ public class TaskController {
 
 @PostMapping
 public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDto, Principal principal) {
+        System.out.println("Reçu dans createTask: dueDate = " + taskDto.getDueDate());
+
     if (taskDto.getTitle() == null || taskDto.getTitle().trim().isEmpty()) {
         return ResponseEntity.badRequest().body(null);
     }
@@ -65,9 +67,13 @@ public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDto, P
     task.setCompleted(taskDto.isCompleted());
     task.setUser(user);
 
-    if (taskDto.getDueDate() != null) {
-        task.setDueDate(taskDto.getDueDate());  // ici le champ est bien transféré
-    }
+if (taskDto.getDueDate() != null) {
+    System.out.println("On va setter dueDate = " + taskDto.getDueDate());
+    task.setDueDate(taskDto.getDueDate());
+} else {
+    System.out.println("dueDate est NULL !");
+}
+
 
     Task savedTask = taskService.save(task);
     return ResponseEntity.ok(convertToDTO(savedTask));
@@ -90,15 +96,16 @@ public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDto, P
     }
 
     // Convertit une entité Task en DTO
-    private TaskDTO convertToDTO(Task task) {
-        return new TaskDTO(
-                task.getId(),
-                task.getTitle(),
-                task.getDescription(),
-                task.isCompleted(),
-                task.getUser() != null ? task.getUser().getUsername() : null,
-                task.getCreatedAt(),
-                task.getDueDate()
-        );
-    }
+private TaskDTO convertToDTO(Task task) {
+    return new TaskDTO(
+        task.getId(),
+        task.getTitle(),
+        task.getDescription(),
+        task.isCompleted(),
+        task.getUser() != null ? task.getUser().getUsername() : null,
+        task.getCreatedAt(),
+        task.getDueDate()   // ✅ bien inclure ceci
+    );
+}
+
 }
