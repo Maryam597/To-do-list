@@ -5,6 +5,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "task")
 public class Task {
@@ -21,16 +26,22 @@ public class Task {
     @Column(nullable = true)
     private String description;
 
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
     private boolean completed = false;
 
-@ManyToOne(fetch = FetchType.EAGER) 
-@JoinColumn(name = "user_id")
-@JsonBackReference("user-task")
-private User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference("user-task")
+    private User user;
 
-
-
-    public Task() {}
+    public Task() {
+    }
 
     // Getters & setters
 
@@ -73,4 +84,21 @@ private User user;
     public void setUser(User user) {
         this.user = user;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
 }

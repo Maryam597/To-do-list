@@ -17,6 +17,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/api/tasks")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -47,28 +48,31 @@ public class TaskController {
         return ResponseEntity.ok(taskDTOs);
     }
 
-    // Crée une nouvelle tâche
-    @PostMapping
-    public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody Task task, Principal principal) {
-        if (task.getTitle() == null || task.getTitle().trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        // Si description est absente, la définir à une chaîne vide
-        if (task.getDescription() == null) {
-            task.setDescription("");
-        }
-
-        // Associer l'utilisateur courant à la tâche
-        String userEmail = principal.getName();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        task.setUser(user);
-
-        Task savedTask = taskService.save(task);
-        return ResponseEntity.ok(convertToDTO(savedTask));
+@PostMapping
+public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDto, Principal principal) {
+    if (taskDto.getTitle() == null || taskDto.getTitle().trim().isEmpty()) {
+        return ResponseEntity.badRequest().body(null);
     }
+
+    String userEmail = principal.getName();
+    User user = userRepository.findByEmail(userEmail)
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+    // Création de l'entité Task
+    Task task = new Task();
+    task.setTitle(taskDto.getTitle());
+    task.setDescription(taskDto.getDescription() != null ? taskDto.getDescription() : "");
+    task.setCompleted(taskDto.isCompleted());
+    task.setUser(user);
+
+    if (taskDto.getDueDate() != null) {
+        task.setDueDate(taskDto.getDueDate());  // ici le champ est bien transféré
+    }
+
+    Task savedTask = taskService.save(task);
+    return ResponseEntity.ok(convertToDTO(savedTask));
+}
+
 
     // Supprime une tâche par ID
     @DeleteMapping("/{id}")
@@ -92,7 +96,9 @@ public class TaskController {
                 task.getTitle(),
                 task.getDescription(),
                 task.isCompleted(),
-                task.getUser() != null ? task.getUser().getUsername() : null
+                task.getUser() != null ? task.getUser().getUsername() : null,
+                task.getCreatedAt(),
+                task.getDueDate()
         );
     }
 }

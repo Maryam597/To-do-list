@@ -1,5 +1,8 @@
 package com.todolist.backend.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Data
@@ -11,4 +14,7 @@ public class TaskDTO {
     private String description;
     private boolean completed;
     private String username; 
+        private LocalDateTime createdAt;  
+    private LocalDate dueDate;        
+
 }

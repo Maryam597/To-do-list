@@ -6,7 +6,10 @@
 <form (ngSubmit)="onLogin()">
   <input [(ngModel)]="email" name="email" placeholder="Email" required />
   <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
-  <input type="checkbox" [(ngModel)]="rememberMe"> Rester connecté
+<div class="checkbox-container">
+  <input type="checkbox" [(ngModel)]="rememberMe" id="rememberMe" name="rememberMe" />
+  <label for="rememberMe">Rester connecté</label>
+</div>
 
   <button type="submit">Login</button>
 
