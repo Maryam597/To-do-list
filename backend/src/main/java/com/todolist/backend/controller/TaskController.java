@@ -3,12 +3,11 @@ package com.todolist.backend.controller;
 import com.todolist.backend.dto.TaskDTO;
 import com.todolist.backend.model.Task;
 import com.todolist.backend.model.User;
+import com.todolist.backend.repository.TaskRepository;
+import com.todolist.backend.repository.UserRepository;
 import com.todolist.backend.service.TaskService;
 
 import jakarta.validation.Valid;
-
-import com.todolist.backend.repository.TaskRepository;
-import com.todolist.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,70 +24,75 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-    
+
     @Autowired
     private TaskRepository taskRepository;
 
     @Autowired
     private UserRepository userRepository;
 
-
+    // Récupère toutes les tâches liées à l'utilisateur connecté
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getTasksByUser(Principal principal) {
         String userEmail = principal.getName();
         User user = userRepository.findByEmail(userEmail)
-            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        List<Task> task = taskService.findByUserId(user.getId());
+        List<Task> tasks = taskService.findByUserId(user.getId());
 
-        return ResponseEntity.ok(
-            task.stream().map(this::convertToDTO).collect(Collectors.toList())
-        );
+        List<TaskDTO> taskDTOs = tasks.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(taskDTOs);
     }
 
+    // Crée une nouvelle tâche
     @PostMapping
-public ResponseEntity<TaskDTO> createTask(@RequestBody Task task, Principal principal) {
-    if (task.getTitle() == null || task.getTitle().trim().isEmpty()) {
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody Task task, Principal principal) {
+        if (task.getTitle() == null || task.getTitle().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // Si description est absente, la définir à une chaîne vide
+        if (task.getDescription() == null) {
+            task.setDescription("");
+        }
+
+        // Associer l'utilisateur courant à la tâche
+        String userEmail = principal.getName();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        task.setUser(user);
+
+        Task savedTask = taskService.save(task);
+        return ResponseEntity.ok(convertToDTO(savedTask));
     }
 
-
-    if (task.getDescription() == null) {
-    task.setDescription("");
-}
-    String userEmail = principal.getName();
-    User user = userRepository.findByEmail(userEmail)
-        .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-    task.setUser(user);
-
-
-    Task savedTask = taskService.save(task);
-    return ResponseEntity.ok(convertToDTO(savedTask));
-}
-
-
-
+    // Supprime une tâche par ID
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
+    // Met à jour une tâche existante
     @PutMapping("/{id}")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
         task.setId(id);
-        Task updated = taskService.update(task);
-        return ResponseEntity.ok(convertToDTO(updated));
+        Task updatedTask = taskService.update(task);
+        return ResponseEntity.ok(convertToDTO(updatedTask));
     }
 
-    // Méthode utilitaire pour convertir une entité vers un DTO
+    // Convertit une entité Task en DTO
     private TaskDTO convertToDTO(Task task) {
         return new TaskDTO(
-            task.getId(),
-            task.getTitle(),
-            task.getDescription(),
-            task.isCompleted(),
-            task.getUser() != null ? task.getUser().getUsername() : null
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.isCompleted(),
+                task.getUser() != null ? task.getUser().getUsername() : null
         );
     }
 }
