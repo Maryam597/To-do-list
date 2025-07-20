@@ -13,10 +13,12 @@ import { CommonModule } from '@angular/common';
 })
 export class Tasks implements OnInit {
   tasks: Task[] = [];
+
   newTask: Task = {
     title: '',
     description: '',
-    completed: false
+    completed: false,
+    dueDate: '' // ✅ On initialise bien la dueDate ici
   };
 
   constructor(private taskService: TaskService) {}
@@ -39,8 +41,14 @@ export class Tasks implements OnInit {
 
     this.taskService.addTask(this.newTask).subscribe(
       () => {
-        this.newTask = { id: undefined, title: '', description: '', completed: false };
-        this.loadTasks(); // ✅ Recharge toute la liste après ajout
+        this.newTask = {
+          id: undefined,
+          title: '',
+          description: '',
+          completed: false,
+          dueDate: '' // ✅ Réinitialisation ici aussi
+        };
+        this.loadTasks();
       },
       (error) => {
         console.error('Erreur lors de l’ajout de la tâche', error);

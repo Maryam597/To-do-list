@@ -15,9 +15,11 @@ export class TodoComponent {
   tasks: Task[] = [];
 
   newTask: Task = {
-    id: 0,
-    title: '',
-    completed: false
+    id: undefined,
+  title: '',
+  description: '', // ✅ description ajoutée
+  completed: false,
+  dueDate: ''
   };
 
   constructor(private taskService: TaskService) {}
@@ -25,7 +27,13 @@ export class TodoComponent {
   onSubmit(): void {
     this.taskService.addTask(this.newTask).subscribe((task: Task) => {
       this.tasks.push(task);
-      this.newTask = { id: 0, title: '', completed: false };
+      this.newTask = { 
+          id: undefined,
+  title: '',
+  description: '', // ✅ description ajoutée
+  completed: false,
+  dueDate: '' // si tu l’as rendue obligatoire dans l’interface Task
+ };
     });
   }
 }
