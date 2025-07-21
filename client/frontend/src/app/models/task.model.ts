@@ -6,4 +6,6 @@ export interface Task {
   dueDate?: string | null;   
   createdAt?: string;    
   username?: string;     
+  selected?: boolean;
+
 }

@@ -35,7 +35,7 @@ export class Tasks implements OnInit {
     title: '',
     description: '',
     completed: false,
-    dueDate: '' 
+    dueDate: '',
   };
 
   constructor(private taskService: TaskService,
@@ -103,4 +103,58 @@ ngOnInit(): void {
       this.taskService.deleteTask(task.id!).subscribe(() => this.loadTasks());
     }
   }
+
+
+allSelected = false;
+
+toggleSelectAll(event: Event) {
+  const checked = (event.target as HTMLInputElement).checked;
+  this.allSelected = checked;
+  this.tasks.forEach(task => task.selected = checked);
+}
+
+hasSelectedTasks(): boolean {
+  return this.tasks.some(task => task.selected);
+}
+
+deleteSelectedTasks() {
+  const selectedIds = this.tasks
+    .filter(task => task.selected)
+    .map(task => task.id!)
+  
+  if(selectedIds.length === 0) return;
+
+  this.taskService.deleteMultipleTasks(selectedIds).subscribe(() => {
+    this.loadTasks();
+    this.allSelected = false;
+  }, error => {
+    console.error('Erreur lors de la suppression multiple', error);
+  });
+}
+
+
+
+// Propriété pour garder en mémoire la tâche en cours d’édition
+editingTaskId: number | null = null;
+
+// Lance l’édition sur une tâche donnée
+editTask(task: Task) {
+  this.editingTaskId = task.id!;
+}
+
+// Sauvegarde la tâche modifiée (exemple : appelle ta méthode update dans service)
+saveTask(task: Task) {
+  this.taskService.updateTask(task).subscribe(() => {
+    this.editingTaskId = null;
+    this.loadTasks(); // Recharge la liste pour refléter les modifications
+  });
+}
+
+// Annule l’édition en réinitialisant la tâche éditée et en rechargeant la liste
+cancelEdit() {
+  this.editingTaskId = null;
+  this.loadTasks(); // Recharge la liste pour annuler modifications non sauvegardées
+}
+
+
 }

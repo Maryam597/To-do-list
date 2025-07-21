@@ -1,40 +1,83 @@
-<div class="task-container">
-  <h2>Mes tâches</h2>
+<div class="page-wrapper">
+  <div class="form-box">
+    <h2>Ajouter une tâche</h2>
 
-  <form (ngSubmit)="addTask()" class="task-form">
-    <mat-form-field appearance="fill">
-      <mat-label>Titre</mat-label>
-      <input matInput type="text" [(ngModel)]="newTask.title" name="title" required />
-    </mat-form-field>
+    <form (ngSubmit)="addTask()" class="task-form">
+      <mat-form-field appearance="fill">
+        <mat-label>Titre</mat-label>
+        <input matInput type="text" [(ngModel)]="newTask.title" name="title" required />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Description</mat-label>
-      <textarea matInput [(ngModel)]="newTask.description" name="description"></textarea>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="newTask.description" name="description"></textarea>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Date limite</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="newTask.dueDate" name="dueDate" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Date limite</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="newTask.dueDate" name="dueDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Ajouter</button>
-  </form>
+      <button mat-raised-button color="primary" type="submit" class="submit-btn">Ajouter</button>
+    </form>
+  </div>
 
+  <div class="task-list">
   <ul class="task-list">
-    <li *ngFor="let task of tasks" [class.completed]="task.completed">
-      <div class="task-item">
-        <input type="checkbox" [(ngModel)]="task.completed" (change)="toggleTaskCompletion(task)" />
-        <div class="task-info">
-          <p class="task-title">{{ task.title }}</p>
-          <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
-          <p class="task-date" *ngIf="task.dueDate">📅 {{ task.dueDate | date }}</p>
-        </div>
-        <button mat-icon-button color="warn" (click)="deleteTask(task)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-    </li>
-  </ul>
+  <li>
+    <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)" />
+    <label><strong>Sélectionner tout</strong></label>
+  </li>
+
+  <li *ngFor="let task of tasks" [class.completed]="task.completed">
+  <div class="task-item">
+
+    <input type="checkbox" [(ngModel)]="task.selected" />
+
+    <!-- Affichage normal si pas en mode édition -->
+    <div class="task-info" *ngIf="editingTaskId !== task.id">
+      <p class="task-title">{{ task.title }}</p>
+      <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
+      <p class="task-date" *ngIf="task.dueDate">📅 {{ task.dueDate | date }}</p>
+    </div>
+
+    <!-- Formulaire d’édition inline si en mode édition -->
+    <div class="task-info" *ngIf="editingTaskId === task.id">
+      <input [(ngModel)]="task.title" placeholder="Titre" />
+      <textarea [(ngModel)]="task.description" placeholder="Description"></textarea>
+      <input type="date" [(ngModel)]="task.dueDate" />
+    </div>
+
+    <!-- Bouton supprimer -->
+    <button mat-icon-button color="warn" (click)="deleteTask(task)">
+      <mat-icon>delete</mat-icon>
+    </button>
+
+    <!-- Bouton modifier : affiché uniquement si pas en édition -->
+    <button mat-icon-button color="primary" *ngIf="editingTaskId !== task.id" (click)="editTask(task)">
+      <mat-icon>edit</mat-icon>
+    </button>
+
+    <!-- Boutons sauvegarder / annuler : affichés uniquement en mode édition -->
+    <button mat-icon-button color="primary" *ngIf="editingTaskId === task.id" (click)="saveTask(task)">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button mat-icon-button color="accent" *ngIf="editingTaskId === task.id" (click)="cancelEdit()">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+</li>
+
+</ul>
+
+<!-- Bouton Supprimer la sélection EN DEHORS de la boucle -->
+<button mat-raised-button color="warn" (click)="deleteSelectedTasks()" [disabled]="!hasSelectedTasks()">
+  Supprimer la sélection
+</button>
+
+
+</div>
+
 </div>

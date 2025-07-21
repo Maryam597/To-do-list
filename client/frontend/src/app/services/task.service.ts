@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Auth } from '../auth/auth';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { Task } from '../models/task.model';
 import { environment } from '../environments/environment'
 
@@ -35,4 +35,10 @@ export class TaskService {
   deleteTask(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
+  
+  deleteMultipleTasks(ids: number[]): Observable<any> {
+    const requests = ids.map(id => this.deleteTask(id));
+    return forkJoin(requests);
+  }
+
 }

@@ -57,11 +57,10 @@ h2 {
 mat-form-field {
   width: 100%;
   margin: 1rem 0;
-  background-color: #fffdf5;
-  border-radius: 12px;
-  padding: 0.5rem 1rem;
   font-family: 'Patrick Hand', cursive;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background-color: #fffdf5;
+  border-radius: 12px;
 }
 
 
@@ -135,6 +134,16 @@ mat-label {
   padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.task-list > li:first-child {
+  background-color: #f0f0f0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 
