@@ -24,7 +24,17 @@ export class Login {
         console.log('Réponse API login:', res);
         if (res.token) {
           this.auth.saveToken(res.token, this.rememberMe);
-          this.router.navigate(['/tasks']);
+          
+          // Petite attente pour garantir le stockage avant navigation
+          setTimeout(() => {
+            if (this.auth.isLoggedIn()) {
+              this.router.navigate(['/tasks']);
+            } else {
+              alert('Le token n’a pas été stocké correctement.');
+              console.warn('Token manquant après sauvegarde');
+            }
+          }, 100); // 100ms d’attente
+
         } else {
           alert('Token manquant dans la réponse');
         }

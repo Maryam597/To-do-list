@@ -26,12 +26,12 @@ import { Auth } from './auth/auth'; // <-- N'oublie pas d'importer ton service A
 export class AppComponent implements OnInit {
   constructor(
     public router: Router,
-    private auth: Auth // <-- Injecte Auth ici
+    private auth: Auth 
   ) {}
 
   ngOnInit(): void {
     if (!this.auth.isLoggedIn()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     }
   }
 }

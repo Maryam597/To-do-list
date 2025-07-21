@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class Auth {
+    private tokenKey = 'auth_token';
+
   private apiUrl = "http://localhost:8080";
   private storage: Storage = localStorage;
 
@@ -19,31 +21,19 @@ export class Auth {
     return this.http.post(`${this.apiUrl}/signup`, data);
   }
 
-  saveToken(token: string, remember: boolean = false) {
-    const storage = remember ? localStorage : sessionStorage;
-
-    // Extraire expiration du token
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const expiration = payload.exp * 1000;
-
-    storage.setItem('token', token);
-    storage.setItem('token_expiration', expiration.toString());
+  saveToken(token: string, rememberMe: boolean) {
+    if (rememberMe) {
+      localStorage.setItem(this.tokenKey, token);
+    } else {
+      sessionStorage.setItem(this.tokenKey, token);
+    }
   }
+
 
   getToken(): string | null {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const expiration = localStorage.getItem('token_expiration') || sessionStorage.getItem('token_expiration');
-
-    if (token && expiration) {
-      const now = Date.now();
-      if (now > +expiration) {
-        this.logout(); // token expiré
-        return null;
-      }
-      return token;
-    }
-    return null;
+    return localStorage.getItem(this.tokenKey) || sessionStorage.getItem(this.tokenKey);
   }
+
 
   logout() {
     localStorage.removeItem('token');

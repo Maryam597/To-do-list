@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TaskService } from '../services/task.service';
 import { Task } from '../models/task.model';
 import { CommonModule } from '@angular/common';
+import { Auth } from '../auth/auth'
 
 @Component({
   selector: 'app-tasks',
@@ -18,14 +19,24 @@ export class Tasks implements OnInit {
     title: '',
     description: '',
     completed: false,
-    dueDate: '' // ✅ On initialise bien la dueDate ici
+    dueDate: '' 
   };
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,
+        private auth: Auth // <-- Injecte Auth ici
+    
+  ) {}
 
-  ngOnInit(): void {
-    this.loadTasks();
+ngOnInit(): void {
+  if (!this.auth.isLoggedIn()) {
+    console.warn('Utilisateur non connecté, redirection...');
+    return;
   }
+
+  this.loadTasks();
+}
+
+
 
   loadTasks() {
     this.taskService.getTasks().subscribe(tasks => {
