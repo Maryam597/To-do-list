@@ -1,6 +1,155 @@
-.completed input[type="text"],
-.completed input[type="checkbox"] + input,
-.completed input[type="checkbox"] + input + input {
+.task-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #e8e4d4;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #026118;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+
+.task-item {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.task-info {
+  flex-grow: 1;
+}
+
+.task-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.task-desc,
+.task-date {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.completed .task-title,
+.completed .task-desc {
   text-decoration: line-through;
-  color: gray;
+  color: #999;
+}
+
+
+mat-form-field {
+  width: 100%;
+  margin: 1rem 0;
+  background-color: #fffdf5;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  font-family: 'Patrick Hand', cursive;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+
+mat-label {
+  color: #4a6542;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1rem;
+}
+
+::ng-deep .mat-input-element {
+  color: #3c4a34;
+  font-family: 'Indie Flower', cursive;
+}
+
+::ng-deep .mat-form-field-underline {
+  background-color: #c9b68b;
+}
+
+::ng-deep .mat-form-field-ripple {
+  background-color: #6a8a45;
+}
+
+.submit-btn {
+  background-color: #6a8a45;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 0.8rem 1.6rem;
+  font-family: 'Delius', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: #527032;
+}
+
+.form-container {
+  background-color: #fffaf0;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+.page-wrapper {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.form-box {
+  flex: 1;
+  background-color: #f9f7f2;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.task-list {
+  flex: 2;
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+
+
+@media (max-width: 600px) {
+  .task-container {
+    padding: 1rem;
+  }
+
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task-info {
+    width: 100%;
+  }
 }

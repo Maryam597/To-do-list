@@ -1,20 +1,40 @@
-<h2>Mes Tâches</h2>
+<div class="task-container">
+  <h2>Mes tâches</h2>
 
-<!-- Formulaire d'ajout -->
-<input [(ngModel)]="newTask.title" placeholder="Nouvelle tâche" />
-<input [(ngModel)]="newTask.description" placeholder="Description" />
-<input [(ngModel)]="newTask.dueDate" type="date" placeholder="Date limite" /> <!-- ✅ Ajouté -->
-<button (click)="addTask()">Ajouter</button>
+  <form (ngSubmit)="addTask()" class="task-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Titre</mat-label>
+      <input matInput type="text" [(ngModel)]="newTask.title" name="title" required />
+    </mat-form-field>
 
-<!-- Liste des tâches -->
-<ul>
-  <li *ngFor="let task of tasks" [class.completed]="task.completed">
-    <input type="checkbox" [(ngModel)]="task.completed" (change)="updateTask(task)" />
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="newTask.description" name="description"></textarea>
+    </mat-form-field>
 
-    <input [(ngModel)]="task.title" (blur)="updateTask(task)" />
-    <input [(ngModel)]="task.description" (blur)="updateTask(task)" />
-    <input [(ngModel)]="task.dueDate" type="date" (change)="updateTask(task)" />
+    <mat-form-field appearance="fill">
+      <mat-label>Date limite</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="newTask.dueDate" name="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
-    <button (click)="deleteTask(task)">❌</button>
-  </li>
-</ul>
+    <button mat-raised-button color="primary" type="submit">Ajouter</button>
+  </form>
+
+  <ul class="task-list">
+    <li *ngFor="let task of tasks" [class.completed]="task.completed">
+      <div class="task-item">
+        <input type="checkbox" [(ngModel)]="task.completed" (change)="toggleTaskCompletion(task)" />
+        <div class="task-info">
+          <p class="task-title">{{ task.title }}</p>
+          <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
+          <p class="task-date" *ngIf="task.dueDate">📅 {{ task.dueDate | date }}</p>
+        </div>
+        <button mat-icon-button color="warn" (click)="deleteTask(task)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

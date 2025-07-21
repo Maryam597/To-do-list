@@ -1,9 +1,9 @@
 export interface Task {
   id?: number;
   title: string;
-  description?: string;
+  description?: string | null;
   completed: boolean;
-  dueDate?: string;   
+  dueDate?: string | null;   
   createdAt?: string;    
   username?: string;     
 }

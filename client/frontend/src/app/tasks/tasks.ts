@@ -3,14 +3,30 @@ import { FormsModule } from '@angular/forms';
 import { TaskService } from '../services/task.service';
 import { Task } from '../models/task.model';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../auth/auth'
+import { Auth } from '../auth/auth';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.html',
   styleUrls: ['./tasks.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, 
+    FormsModule,     
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatIconModule
+]
 })
 export class Tasks implements OnInit {
   tasks: Task[] = [];
@@ -26,6 +42,12 @@ export class Tasks implements OnInit {
         private auth: Auth // <-- Injecte Auth ici
     
   ) {}
+
+  toggleTaskCompletion(task: any): void {
+  task.completed = !task.completed;
+  this.updateTask(task); 
+}
+
 
 ngOnInit(): void {
   if (!this.auth.isLoggedIn()) {
@@ -46,9 +68,12 @@ ngOnInit(): void {
   }
 
   addTask() {
-    if (!this.newTask.title || !this.newTask.description) {
+    if (!this.newTask.title) {
       return;
     }
+  if (!this.newTask.dueDate) {
+    this.newTask.dueDate = null;
+  }
 
     this.taskService.addTask(this.newTask).subscribe(
       () => {
