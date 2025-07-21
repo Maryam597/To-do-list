@@ -17,7 +17,7 @@ export class TodoComponent {
   newTask: Task = {
     id: undefined,
   title: '',
-  description: '', // ✅ description ajoutée
+  description: '', 
   completed: false,
   dueDate: ''
   };
@@ -30,9 +30,9 @@ export class TodoComponent {
       this.newTask = { 
           id: undefined,
   title: '',
-  description: '', // ✅ description ajoutée
+  description: '', 
   completed: false,
-  dueDate: '' // si tu l’as rendue obligatoire dans l’interface Task
+  dueDate: '' 
  };
     });
   }
