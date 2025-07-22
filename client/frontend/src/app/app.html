@@ -2,9 +2,11 @@
   <header>
     <nav>
       <a routerLink="/">Accueil</a> 
-      <a routerLink="/tasks">Voir mes tâches</a> 
+      <a routerLink="/tasks">Mes tâches</a> 
       <a routerLink="/login">Se connecter</a> 
       <a routerLink="/register">Créer un compte</a>
+      <a *ngIf="isLoggedIn()" (click)="logout()" class="logout-button"> Déconnexion </a>
+
     </nav>
   </header>
 

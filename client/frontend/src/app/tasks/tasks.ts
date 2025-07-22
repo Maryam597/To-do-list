@@ -30,8 +30,6 @@ import { MatIconModule } from '@angular/material/icon';
 export class Tasks implements OnInit {
   tasks: Task[] = [];
   allSelected = false;
-  editMode: boolean = false;
-  editingTaskId: number | null = null;
 
   newTask: Task = {
     title: '',
@@ -53,14 +51,15 @@ export class Tasks implements OnInit {
     this.loadTasks();
   }
 
-loadTasks() {
-  this.taskService.getTasks().subscribe((tasks) => {
-    this.tasks = tasks.map(task => ({
-      ...task,
-      isEditing: false
-    }));
-  });
-}
+  loadTasks() {
+    this.taskService.getTasks().subscribe((tasks) => {
+      this.tasks = tasks.map(task => ({
+        ...task,
+        isEditing: false,
+        selected: false
+      }));
+    });
+  }
 
   addTask() {
     if (!this.newTask.title.trim()) return;
@@ -106,34 +105,20 @@ loadTasks() {
   }
 
   editTask(task: Task) {
-    this.editMode = true;
-    this.editingTaskId = task.id!;
-    this.newTask = { ...task };
+    task.isEditing = true;
   }
 
-  saveTask(task: Task) {
-    this.taskService.updateTask(this.newTask).subscribe(() => {
-      this.cancelEdit();
-      this.loadTasks();
-    });
-  }
-
-  cancelEdit() {
-    this.editMode = false;
-    this.editingTaskId = null;
-    this.newTask = { title: '', description: '', dueDate: null, completed: false };
+  cancelEdit(task: Task) {
+    task.isEditing = false;
   }
 
   saveInlineEdit(task: Task) {
-  this.taskService.updateTask(task).subscribe(() => {
-    task.isEditing = false;
-    this.loadTasks(); // Forcer le rafraîchissement si besoin
-  });
-}
+    this.taskService.updateTask(task).subscribe(() => {
+      task.isEditing = false;
+    });
+  }
 
-trackById(index: number, task: Task): number {
-  return task.id!;
-}
-
-
+  trackById(index: number, task: Task): number {
+    return task.id!;
+  }
 }

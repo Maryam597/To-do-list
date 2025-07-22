@@ -1,41 +1,40 @@
 import { Component } from '@angular/core';
-import { TodoComponent } from '../todo/todo';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
-import { FormsModule } from '@angular/forms';
+
+interface Task {
+  id: number;
+  title: string;
+  dueDate: Date;
+  description?: string;
+}
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    TodoComponent,
-    RouterModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatNativeDateModule,
-    FormsModule
-  ],
+  imports: [CommonModule],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
 export class Home {
   today: Date = new Date();
-  private readonly todayBase = new Date(); // pour référence
+  private readonly todayBase = new Date();
 
-  selectedDate: Date = new Date(); // Pour le Datepicker
+  selectedDate: Date = new Date();
+
+  tasks: Task[] = [
+    { id: 1, title: 'Arroser les plantes', dueDate: new Date('2025-07-22') },
+    { id: 2, title: 'Récolter les tomates', dueDate: new Date('2025-07-22') },
+    { id: 3, title: 'Planter les graines de tournesol', dueDate: new Date('2025-07-21') },
+    { id: 4, title: 'Préparer la serre', dueDate: new Date('2025-07-20') },
+    // ...
+  ];
 
   get isYesterday(): boolean {
     return this.diffInDays(this.today, this.todayBase) === -1;
   }
-
   get isToday(): boolean {
     return this.diffInDays(this.today, this.todayBase) === 0;
   }
-
   get isTomorrow(): boolean {
     return this.diffInDays(this.today, this.todayBase) === 1;
   }
@@ -46,6 +45,7 @@ export class Home {
     const diff = this.diffInDays(newDate, this.todayBase);
     if (diff >= -1 && diff <= 1) {
       this.today = newDate;
+      this.selectedDate = newDate;
     }
   }
 
@@ -59,11 +59,18 @@ export class Home {
   onDateChange(event: any): void {
     this.selectedDate = event.value;
     this.today = this.selectedDate;
-    this.loadTasksForDate(this.selectedDate);
   }
 
-  loadTasksForDate(date: Date) {
-    // 🔧 Tu brancheras ici l'appel à la BDD ou au service de tâches
-    console.log("Charger les tâches pour :", date);
+  get tasksForSelectedDate(): Task[] {
+    return this.tasks.filter(task => 
+      task.dueDate.getFullYear() === this.selectedDate.getFullYear() &&
+      task.dueDate.getMonth() === this.selectedDate.getMonth() &&
+      task.dueDate.getDate() === this.selectedDate.getDate()
+    );
+  }
+
+  get lastTasks(): Task[] {
+    const sorted = this.tasks.slice().sort((a,b) => b.id - a.id);
+    return sorted.slice(0, 3);
   }
 }
