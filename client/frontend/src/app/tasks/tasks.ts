@@ -11,90 +11,66 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-
-
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.html',
   styleUrls: ['./tasks.scss'],
   standalone: true,
-  imports: [CommonModule, 
-    FormsModule,     
+  imports: [
+    CommonModule,
+    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
     MatIconModule
-]
+  ]
 })
 export class Tasks implements OnInit {
   tasks: Task[] = [];
+  allSelected = false;
+  editMode: boolean = false;
+  editingTaskId: number | null = null;
 
   newTask: Task = {
     title: '',
     description: '',
     completed: false,
-    dueDate: '',
+    dueDate: null
   };
 
-  constructor(private taskService: TaskService,
-        private auth: Auth // <-- Injecte Auth ici
-    
+  constructor(
+    private taskService: TaskService,
+    private auth: Auth
   ) {}
 
-  toggleTaskCompletion(task: any): void {
-  task.completed = !task.completed;
-  this.updateTask(task); 
-}
-
-
-ngOnInit(): void {
-  if (!this.auth.isLoggedIn()) {
-    console.warn('Utilisateur non connecté, redirection...');
-    return;
-  }
-
-  this.loadTasks();
-}
-
-
-
-  loadTasks() {
-    this.taskService.getTasks().subscribe(tasks => {
-      console.log("Tâches récupérées :", tasks);
-      this.tasks = tasks;
-    });
-  }
-
-  addTask() {
-    if (!this.newTask.title) {
+  ngOnInit(): void {
+    if (!this.auth.isLoggedIn()) {
+      console.warn('Utilisateur non connecté');
       return;
     }
-  if (!this.newTask.dueDate) {
-    this.newTask.dueDate = null;
+    this.loadTasks();
   }
 
-    this.taskService.addTask(this.newTask).subscribe(
-      () => {
-        this.newTask = {
-          id: undefined,
-          title: '',
-          description: '',
-          completed: false,
-          dueDate: '' // ✅ Réinitialisation ici aussi
-        };
-        this.loadTasks();
-      },
-      (error) => {
-        console.error('Erreur lors de l’ajout de la tâche', error);
-      }
-    );
-  }
+loadTasks() {
+  this.taskService.getTasks().subscribe((tasks) => {
+    this.tasks = tasks.map(task => ({
+      ...task,
+      isEditing: false
+    }));
+  });
+}
 
-  updateTask(task: Task) {
-    this.taskService.updateTask(task).subscribe(() => {
-      console.log("Tâche mise à jour :", task);
+  addTask() {
+    if (!this.newTask.title.trim()) return;
+
+    const taskToAdd = { ...this.newTask };
+    if (!taskToAdd.dueDate) taskToAdd.dueDate = null;
+
+    this.taskService.addTask(taskToAdd).subscribe(() => {
+      this.newTask = { title: '', description: '', dueDate: null, completed: false };
+      this.loadTasks();
     });
   }
 
@@ -104,56 +80,59 @@ ngOnInit(): void {
     }
   }
 
+  toggleTaskCompletion(task: Task): void {
+    task.completed = !task.completed;
+    this.taskService.updateTask(task).subscribe();
+  }
 
-allSelected = false;
+  toggleSelectAll(event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.allSelected = checked;
+    this.tasks.forEach(task => task.selected = checked);
+  }
 
-toggleSelectAll(event: Event) {
-  const checked = (event.target as HTMLInputElement).checked;
-  this.allSelected = checked;
-  this.tasks.forEach(task => task.selected = checked);
-}
+  hasSelectedTasks(): boolean {
+    return this.tasks.some(task => task.selected);
+  }
 
-hasSelectedTasks(): boolean {
-  return this.tasks.some(task => task.selected);
-}
+  deleteSelectedTasks() {
+    const selectedIds = this.tasks.filter(t => t.selected).map(t => t.id!);
+    if (selectedIds.length === 0) return;
 
-deleteSelectedTasks() {
-  const selectedIds = this.tasks
-    .filter(task => task.selected)
-    .map(task => task.id!)
-  
-  if(selectedIds.length === 0) return;
+    this.taskService.deleteMultipleTasks(selectedIds).subscribe(() => {
+      this.loadTasks();
+      this.allSelected = false;
+    });
+  }
 
-  this.taskService.deleteMultipleTasks(selectedIds).subscribe(() => {
-    this.loadTasks();
-    this.allSelected = false;
-  }, error => {
-    console.error('Erreur lors de la suppression multiple', error);
-  });
-}
+  editTask(task: Task) {
+    this.editMode = true;
+    this.editingTaskId = task.id!;
+    this.newTask = { ...task };
+  }
 
+  saveTask(task: Task) {
+    this.taskService.updateTask(this.newTask).subscribe(() => {
+      this.cancelEdit();
+      this.loadTasks();
+    });
+  }
 
-
-// Propriété pour garder en mémoire la tâche en cours d’édition
-editingTaskId: number | null = null;
-
-// Lance l’édition sur une tâche donnée
-editTask(task: Task) {
-  this.editingTaskId = task.id!;
-}
-
-// Sauvegarde la tâche modifiée (exemple : appelle ta méthode update dans service)
-saveTask(task: Task) {
-  this.taskService.updateTask(task).subscribe(() => {
+  cancelEdit() {
+    this.editMode = false;
     this.editingTaskId = null;
-    this.loadTasks(); // Recharge la liste pour refléter les modifications
+    this.newTask = { title: '', description: '', dueDate: null, completed: false };
+  }
+
+  saveInlineEdit(task: Task) {
+  this.taskService.updateTask(task).subscribe(() => {
+    task.isEditing = false;
+    this.loadTasks(); // Forcer le rafraîchissement si besoin
   });
 }
 
-// Annule l’édition en réinitialisant la tâche éditée et en rechargeant la liste
-cancelEdit() {
-  this.editingTaskId = null;
-  this.loadTasks(); // Recharge la liste pour annuler modifications non sauvegardées
+trackById(index: number, task: Task): number {
+  return task.id!;
 }
 
 

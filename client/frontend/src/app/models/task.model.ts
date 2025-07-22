@@ -7,5 +7,5 @@ export interface Task {
   createdAt?: string;    
   username?: string;     
   selected?: boolean;
-
+  isEditing?: boolean;
 }
