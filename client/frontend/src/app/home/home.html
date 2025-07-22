@@ -9,7 +9,7 @@
 
       <div class="buttons">
         <a routerLink="/tasks" class="btn btn-primary">Voir mes tâches</a>
-        <a routerLink="/login" class="btn btn-secondary">Se connecter</a>
+        <a routerLink="/login" *ngIf="!isLoggedIn" class="btn btn-secondary">Se connecter</a>
       </div>
 
       <blockquote class="quote">
@@ -34,7 +34,7 @@
     <!-- Datepicker -->
     <mat-form-field appearance="fill">
       <mat-label>Choisir une date</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange($event)">
+      <input matInput [matDatepicker]="picker" [(ngModel)]="today" (dateChange)="onDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -43,11 +43,9 @@
       ✨ <em>“Faites de votre journée une belle histoire.”</em>
     </div>
 
-    <!-- Bouton changé pour créer une nouvelle tâche -->
-    <a routerLink="/tasks/new" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a>
+    <!-- <a routerLink="/tasks/new" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a> -->
   </div>
 
-  <!-- Tâches du jour : affiche les tâches pour la date sélectionnée -->
   <div class="today-tasks">
     <h3>📋 Tâches du jour</h3>
     <ul>
@@ -58,12 +56,11 @@
     </ul>
   </div>
 
-  <!-- Dernières tâches ajoutées -->
-  <div class="today-tasks" style="margin-top:2rem;">
-    <h3>🕒 Dernières tâches ajoutées</h3>
-    <ul>
-      <li *ngFor="let task of lastTasks">{{ task.title }}</li>
-    </ul>
-  </div>
+ <div *ngIf="isLoggedIn" class="today-tasks" style="margin-top:2rem;">
+  <h3>🕒 Dernières tâches ajoutées</h3>
+  <ul>
+    <li *ngFor="let task of lastTasks">{{ task.title }}</li>
+  </ul>
+</div>
 
 </div>

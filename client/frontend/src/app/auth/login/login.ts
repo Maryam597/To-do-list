@@ -17,6 +17,7 @@ export class Login {
 
   constructor(private auth: Auth, private router: Router) {}
 
+  
   onLogin() {
     console.log('Tentative de connexion avec', this.email, this.password);
     this.auth.login({ email: this.email, password: this.password }).subscribe({
@@ -24,8 +25,11 @@ export class Login {
         console.log('Réponse API login:', res);
         if (res.token) {
           this.auth.saveToken(res.token, this.rememberMe);
+          if (res.user) {
+  localStorage.setItem('user', JSON.stringify(res.user));
+}
+
           
-          // Petite attente pour garantir le stockage avant navigation
           setTimeout(() => {
             if (this.auth.isLoggedIn()) {
               this.router.navigate(['/tasks']);

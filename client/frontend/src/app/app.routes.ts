@@ -5,16 +5,24 @@ import { Tasks } from './tasks/tasks';
 import { Home } from './home/home';
 import { Register } from './register/register';
 import { authGuard } from './guards/auth.guard';
+import { loginRedirectGuard } from './guards/login-redirect.guard';
+
+
 
 
 
 export const routes: Routes = [
-  { path: 'login', component: Login },
-  { path: 'tasks', component: Tasks },
-  { path: '', component: Home },
-  { path: 'register', component: Register },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  { path: 'login', component: Login, canActivate: [loginRedirectGuard] },
+  { path: 'tasks', loadComponent: () => import('./tasks/tasks').then(m => m.Tasks), canActivate: [authGuard] },
+  { path: 'home', component: Home },
+  { path: 'register', component: Register, canActivate: [loginRedirectGuard] },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' },
+  {  path: 'tasks/new',
+  canActivate: [authGuard], 
+  loadComponent: () => import('./tasks/tasks').then(m => m.Tasks)
+}
+
 ];
 
 
@@ -24,25 +32,3 @@ export const routes: Routes = [
   })
   export class AppRoutingModule {}
 
-
-//   import { Routes } from '@angular/router';
-// import { authGuard } from './auth/auth.guard';
-// import { TaskListComponent } from './tasks/task-list.component';
-// import { Login } from './auth/login';
-
-// export const routes: Routes = [
-//   {
-//     path: '',
-//     redirectTo: '/login',
-//     pathMatch: 'full'
-//   },
-//   {
-//     path: 'login',
-//     component: Login
-//   },
-//   {
-//     path: 'tasks',
-//     component: TaskListComponent,
-//     canActivate: [authGuard]  // 🔐 ici on protège
-//   }
-// ];

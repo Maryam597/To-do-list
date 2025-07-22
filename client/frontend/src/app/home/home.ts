@@ -1,5 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { inject } from '@angular/core';
+import { Auth } from '../auth/auth';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+
 
 interface Task {
   id: number;
@@ -11,15 +22,29 @@ interface Task {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [    
+    CommonModule,
+    MatFormFieldModule,
+    RouterModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    FormsModule, 
+    DatePipe
+],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
 export class Home {
+  auth = inject(Auth);
   today: Date = new Date();
   private readonly todayBase = new Date();
 
   selectedDate: Date = new Date();
+
+  get isLoggedIn(): boolean {
+    return this.auth.isLoggedIn();
+  }
 
   tasks: Task[] = [
     { id: 1, title: 'Arroser les plantes', dueDate: new Date('2025-07-22') },
@@ -56,10 +81,6 @@ export class Home {
     return Math.round(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  onDateChange(event: any): void {
-    this.selectedDate = event.value;
-    this.today = this.selectedDate;
-  }
 
   get tasksForSelectedDate(): Task[] {
     return this.tasks.filter(task => 
@@ -73,4 +94,9 @@ export class Home {
     const sorted = this.tasks.slice().sort((a,b) => b.id - a.id);
     return sorted.slice(0, 3);
   }
+
+  onDateChange(event: any): void {
+  this.today = event.value;
+}
+
 }
