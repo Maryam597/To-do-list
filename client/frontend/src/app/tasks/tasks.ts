@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TaskRaw } from '../models/task.model'; 
 
 @Component({
   selector: 'app-tasks',
@@ -52,7 +53,7 @@ export class Tasks implements OnInit {
   }
 
   loadTasks() {
-    this.taskService.getTasks().subscribe((tasks) => {
+    this.taskService.getTasks().subscribe(tasks => {
       this.tasks = tasks.map(task => ({
         ...task,
         isEditing: false,
@@ -62,16 +63,19 @@ export class Tasks implements OnInit {
   }
 
   addTask() {
-    if (!this.newTask.title.trim()) return;
+  if (!this.newTask.title.trim()) return;
 
-    const taskToAdd = { ...this.newTask };
-    if (!taskToAdd.dueDate) taskToAdd.dueDate = null;
+  const taskToAdd: TaskRaw = {
+    ...this.newTask,
+    dueDate: this.newTask.dueDate ? this.newTask.dueDate.toISOString() : null,
+  };
 
-    this.taskService.addTask(taskToAdd).subscribe(() => {
-      this.newTask = { title: '', description: '', dueDate: null, completed: false };
-      this.loadTasks();
-    });
-  }
+  this.taskService.addTask(taskToAdd).subscribe(() => {
+    this.newTask = { title: '', description: '', dueDate: null, completed: false };
+    this.loadTasks();
+  });
+}
+
 
   deleteTask(task: Task) {
     if (confirm(`Supprimer la tâche "${task.title}" ?`)) {
@@ -87,7 +91,7 @@ export class Tasks implements OnInit {
   toggleSelectAll(event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     this.allSelected = checked;
-    this.tasks.forEach(task => task.selected = checked);
+    this.tasks.forEach(task => (task.selected = checked));
   }
 
   hasSelectedTasks(): boolean {

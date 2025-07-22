@@ -46,21 +46,20 @@
     <!-- <a routerLink="/tasks/new" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a> -->
   </div>
 
-  <div class="today-tasks">
-    <h3>📋 Tâches du jour</h3>
-    <ul>
-      <li *ngFor="let task of tasksForSelectedDate">
-        {{ task.title }}
-      </li>
-      <li *ngIf="tasksForSelectedDate.length === 0">Aucune tâche pour ce jour.</li>
-    </ul>
-  </div>
+
+
+
 
  <div *ngIf="isLoggedIn" class="today-tasks" style="margin-top:2rem;">
   <h3>🕒 Dernières tâches ajoutées</h3>
-  <ul>
-    <li *ngFor="let task of lastTasks">{{ task.title }}</li>
-  </ul>
+<ul>
+  <li *ngFor="let task of tasks$ | async">
+    {{ task.id }} - {{ task.title }} - {{ task.dueDate | date:'shortDate' }}
+  </li>
+</ul>
+
+
+
 </div>
 
 </div>
