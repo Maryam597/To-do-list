@@ -12,7 +12,7 @@ import lombok.Data;
 public class RegisterRequest {
 
     @NotBlank(message = "Le nom d'utilisateur est obligatoire")
-    @NotNull(message = "Le nom d'utilisateur est obligatoire")
+    @Pattern(regexp = "^[a-zA-Z0-9_]{3,20}$", message = "Le nom d'utilisateur doit contenir entre 3 et 20 caractères, sans caractères spéciaux")
     private String username;
 
     @Email(message = "Email invalide")
@@ -20,16 +20,14 @@ public class RegisterRequest {
     private String email;
 
     @NotNull(message = "Le mot de passe est obligatoire")
-    @Size(min = 6, message = "Le mot de passe doit contenir au moins 6 caractères")
+    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$", message = "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre")
     private String password;
 
-    private Role role; // ou String role, selon ton model User
+    private Role role;
 
     public Role getRole() {
-    return role;
-}
-
-// Pas besoin de setRole() si tu forces le rôle côté contrôleur
+        return role;
+    }
 
 }
-

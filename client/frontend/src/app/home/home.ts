@@ -9,6 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Task, TaskRaw } from '../models/task.model';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,8 @@ import { Task, TaskRaw } from '../models/task.model';
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
+
+
 export class Home implements OnInit {
   auth = inject(Auth);
   taskService = inject(TaskService);
@@ -36,6 +39,7 @@ export class Home implements OnInit {
   selectedDate: Date = new Date();
 
   tasks: Task[] = [];
+  recentTasks: Task[] = []; // ✅ tâches les plus récentes
   private nextId = 1;
 
   newTitle: string = '';
@@ -46,6 +50,8 @@ export class Home implements OnInit {
     return this.auth.isLoggedIn();
   }
 
+  tasks$!: Observable<Task[]>;
+
   ngOnInit(): void {
     if (this.isLoggedIn) {
       this.loadTasks();
@@ -55,9 +61,28 @@ export class Home implements OnInit {
   }
 
   loadTasks(): void {
+    this.tasks$ = this.taskService.getTasks().pipe(
+      map(tasks =>
+        tasks.map(t => ({
+          ...t,
+          dueDate: t.dueDate ? new Date(t.dueDate) : null
+        }))
+      )
+    );
+
     this.taskService.getTasks().subscribe(tasks => {
-      this.tasks = tasks;
-      this.nextId = this.tasks.length ? Math.max(...this.tasks.map(t => t.id ?? 0)) + 1 : 1;
+      const parsed = tasks.map(t => ({
+        ...t,
+        dueDate: t.dueDate ? new Date(t.dueDate) : null
+      })) as Task[];
+
+      this.tasks = parsed;
+
+      // ✅ Sélection des 3 plus récentes par date de création
+      this.recentTasks = parsed
+        .filter(t => t.createdAt)
+        .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime())
+        .slice(0, 3);
     });
   }
 
@@ -75,6 +100,9 @@ export class Home implements OnInit {
       this.tasks.push(task);
       this.nextId = Math.max(this.nextId, (task.id ?? 0) + 1);
 
+      // Mettre à jour recentTasks
+      this.recentTasks = [task, ...this.recentTasks].slice(0, 3);
+
       this.newTitle = '';
       this.newDueDate = null;
       this.newDescription = '';
@@ -82,15 +110,17 @@ export class Home implements OnInit {
   }
 
   get lastTasks(): Task[] {
-    return this.tasks.slice().sort((a, b) => (b.id ?? 0) - (a.id ?? 0)).slice(0, 3);
+    return this.recentTasks;
   }
 
   get isYesterday(): boolean {
     return this.diffInDays(this.today, this.todayBase) === -1;
   }
+
   get isToday(): boolean {
     return this.diffInDays(this.today, this.todayBase) === 0;
   }
+
   get isTomorrow(): boolean {
     return this.diffInDays(this.today, this.todayBase) === 1;
   }

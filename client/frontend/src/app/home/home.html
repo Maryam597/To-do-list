@@ -24,14 +24,14 @@
     </div>
   </div>
 
-  <div id="calendar-button">
+  <div id="calendar">
     <div class="calendar-controls">
       <button *ngIf="isToday || isTomorrow" (click)="changeDay(-1)">Hier</button>
       <span>{{ today | date: 'EEEE d MMMM' }}</span>
       <button *ngIf="isToday || isYesterday" (click)="changeDay(1)">Demain</button>
     </div>
 
-    <!-- Datepicker -->
+
     <mat-form-field appearance="fill">
       <mat-label>Choisir une date</mat-label>
       <input matInput [matDatepicker]="picker" [(ngModel)]="today" (dateChange)="onDateChange($event)">
@@ -43,23 +43,20 @@
       ✨ <em>“Faites de votre journée une belle histoire.”</em>
     </div>
 
+    <hr>
+
+
+     <div *ngIf="isLoggedIn" class="today-tasks" style="margin-top:2rem;">
+  <h3>🕒 Dernières tâches ajoutées</h3>
+  <ul>
+    <li *ngFor="let task of lastTasks">
+      {{ task.title }} - {{ task.dueDate | date:'shortDate' }}
+    </li>
+  </ul>
+</div>
     <!-- <a routerLink="/tasks/new" id="newpage-btn" class="btn btn-primary">📝 Commencer une nouvelle page</a> -->
   </div>
 
 
-
-
-
- <div *ngIf="isLoggedIn" class="today-tasks" style="margin-top:2rem;">
-  <h3>🕒 Dernières tâches ajoutées</h3>
-<ul>
-  <li *ngFor="let task of tasks$ | async">
-    {{ task.id }} - {{ task.title }} - {{ task.dueDate | date:'shortDate' }}
-  </li>
-</ul>
-
-
-
-</div>
 
 </div>

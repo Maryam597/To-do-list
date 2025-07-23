@@ -1,16 +1,16 @@
 <div class="page-wrapper">
   <header>
  <nav>
-  <a routerLink="/">Accueil</a>
+  <a routerLink="/" class="navbtn">Accueil</a>
 
   <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
-    <a routerLink="/tasks">Mes tâches</a>
-    <button (click)="logout()">Déconnexion</button>
+    <a routerLink="/tasks" class="navbtn">Mes tâches</a>
+    <a (click)="logout()" class="navbtn">Déconnexion</a>
   </ng-container>
 
   <ng-template #notLoggedIn>
-    <a routerLink="/login">Se connecter</a>
-    <a routerLink="/register">Créer un compte</a>
+    <a routerLink="/login" class="navbtn">Se connecter</a>
+    <a routerLink="/register" class="navbtn">Créer un compte</a>
   </ng-template>
 </nav>
 

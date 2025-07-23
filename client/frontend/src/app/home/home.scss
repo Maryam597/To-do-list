@@ -1,21 +1,21 @@
 .home-container {
   width: 100%;
-  // max-width: 600px;
   padding: 2rem;
   background: #f8f1e4;
   font-family: 'Roboto', sans-serif;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   background-size: cover;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  height: 100%;
+  margin: 20px;
 }
 
 
-#calendar-button {
+#calendar {
 background-color: #f9f6ef;
   border: 2px solid #d0c4a8;
   padding: 1.5rem;
@@ -31,6 +31,7 @@ background-color: #f9f6ef;
 
 #large-container {
   display: flex;
+  align-items: center;
 }
 
 
@@ -98,7 +99,7 @@ h1 {
   max-width: 400px;
 }
 
-/* Optionnel : petites feuilles en décor */
+
 .home-container::before {
   content: "🍃";
   position: absolute;
@@ -198,7 +199,7 @@ h1 {
 }
 
 /* Calendrier stylisé nature/carnet */
-#calendar-button {
+#calendar {
   background-color: #f3eddc;
   border: 2px solid #d0c4a8;
   padding: 2rem;
@@ -216,7 +217,7 @@ h1 {
 
 
 
-#calendar-button::before {
+#calendar::before {
   content: "🍂";
   position: absolute;
   top: 10px;
@@ -224,7 +225,7 @@ h1 {
   font-size: 1.8rem;
   opacity: 0.3;
 }
-#calendar-button::after {
+#calendar::after {
   content: "🍃";
   position: absolute;
   bottom: 10px;
@@ -276,7 +277,7 @@ mat-label {
 }
 
 /* Citation décorative */
-#calendar-button em {
+#calendar em {
   display: block;
   margin: 1rem 0;
   font-style: italic;
@@ -317,3 +318,5 @@ mat-label {
   color: #2e5d34 !important;
   font-weight: bold;
 }
+
+

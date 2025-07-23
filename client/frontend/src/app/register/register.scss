@@ -42,3 +42,31 @@
     margin-top: 1rem;
   }
 }
+
+
+.btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #6a8a45; /* vert sauge foncé */
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #527032;
+}
+
+.btn-secondary {
+  background-color: #c9b68b; /* brun clair */
+  color: #3c4a34;
+}
+
+.btn-secondary:hover {
+  background-color: #a8935c;
+}
