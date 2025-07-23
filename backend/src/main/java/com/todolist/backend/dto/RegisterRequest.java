@@ -11,7 +11,7 @@ import lombok.Data;
 public class RegisterRequest {
 
     @NotBlank(message = "Le nom d'utilisateur est obligatoire")
-    @Size(min = 5, max = 20, message = "Le nom d'utilisateur doit contenir entre 5 et 20 caractères")
+    @Size(min = 3, max = 20, message = "Le nom d'utilisateur doit contenir entre 5 et 20 caractères")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Le nom d'utilisateur ne doit contenir que des lettres, chiffres et underscores")
     private String username;
 

@@ -32,11 +32,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
+private AuthenticationManager authenticationManager;
+
+@Autowired
+private JwtService jwtService;
+
+
+    @Autowired
     private UserService userService;
 
 @PostMapping("/register")
 public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequest request) {
-    // Vérifie uniquement les doublons (le reste est géré automatiquement)
     Map<String, List<String>> errors = new HashMap<>();
 
     if (userService.findByEmail(request.getEmail()).isPresent()) {
@@ -56,7 +62,18 @@ public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequest request)
     user.setEmail(request.getEmail());
     user.setPassword(request.getPassword());
     user.setRole(Role.USER);
-    return ResponseEntity.status(201).body(userService.saveUser(user));
+
+    User savedUser = userService.saveUser(user);
+
+    // Génére un token JWT en utilisant le username (ou email)
+    String token = jwtService.generateToken(savedUser.getUsername());
+
+    // Prépare la réponse avec le token
+    Map<String, Object> responseBody = new HashMap<>();
+    responseBody.put("user", savedUser);
+    responseBody.put("token", token);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
 }
 
 

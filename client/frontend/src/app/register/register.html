@@ -39,7 +39,6 @@
       type="submit"
       mat-raised-button
       color="primary"
-      [disabled]="!registerForm.form.valid"
       class="btn btn-primary"
     >
       🌿 S'inscrire
@@ -54,7 +53,9 @@
       J'ai déjà un compte
     </button>
 
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+<div *ngIf="errorMessages.length > 0" class="error-messages">
+  <p class="error" *ngFor="let msg of errorMessages">{{ msg }}</p>
+</div>
     <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
   </form>
 </div>
