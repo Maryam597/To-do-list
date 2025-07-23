@@ -47,7 +47,7 @@ public void testUserRegistration() {
     RegisterRequest request = new RegisterRequest();
     request.setUsername("testuser");
     request.setEmail("testuser@example.com");
-    request.setPassword("testpass");
+    request.setPassword("Testpass123");
 
     
 
