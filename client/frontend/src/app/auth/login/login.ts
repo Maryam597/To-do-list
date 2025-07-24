@@ -1,52 +1,31 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, NgZone } from '@angular/core';
 import { Auth } from '../auth';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss']
+  templateUrl: './login.component.html'
 })
 export class Login {
   email = '';
   password = '';
   rememberMe = false;
+  errorMessages: string[] = [];
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router, private ngZone: NgZone) {}
 
-  
-  onLogin() {
-    console.log('Tentative de connexion avec', this.email, this.password);
+  onSubmit(): void {
     this.auth.login({ email: this.email, password: this.password }).subscribe({
-      next: (res: any) => {
-        console.log('Réponse API login:', res);
+      next: (res) => {
         if (res.token) {
           this.auth.saveToken(res.token, this.rememberMe);
-          if (res.user) {
-  localStorage.setItem('user', JSON.stringify(res.user));
-}
-
-          
-          setTimeout(() => {
-            if (this.auth.isLoggedIn()) {
-              this.router.navigate(['/tasks']);
-            } else {
-              alert('Le token n’a pas été stocké correctement.');
-              console.warn('Token manquant après sauvegarde');
-            }
-          }, 100); // 100ms d’attente
-
-        } else {
-          alert('Token manquant dans la réponse');
+          this.errorMessages = [];
+          this.ngZone.run(() => this.router.navigate(['/tasks']));
         }
       },
       error: (err) => {
-        console.error(err);
-        alert('Login failed');
-      },
+        this.errorMessages = ['Login failed. Please check your credentials.'];
+      }
     });
   }
 }

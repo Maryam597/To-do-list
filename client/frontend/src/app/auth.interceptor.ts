@@ -1,29 +1,23 @@
-import { inject } from '@angular/core';
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Auth } from './auth/auth';
 
-export const authInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<any>,
-  next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
-  const auth = inject(Auth);
-  const token = auth.getToken();
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
 
-  // 👉 LOGS pour debug
-  console.log('[Interceptor] URL:', req.url);
-  console.log('[Interceptor] Token:', token);
+  constructor(private auth: Auth) {}
 
-  // 👉 Si le token existe, on ajoute l'en-tête Authorization
-  if (token) {
-    const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return next(authReq);
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const authToken = this.auth.getToken();
+
+    if (authToken) {
+      const authReq = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${authToken}`)
+      });
+      return next.handle(authReq);
+    }
+
+    return next.handle(req);
   }
-
-  // 👉 Sinon, on laisse passer la requête telle quelle
-  return next(req);
-};
+}

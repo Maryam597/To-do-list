@@ -1,75 +1,35 @@
 import { Component, NgZone } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
 import { Auth } from '../auth/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [    
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
-  ],
-  templateUrl: './register.html',
-  styleUrl: './register.scss'
+  templateUrl: './register.component.html'
 })
 export class Register {
-  registerData = {
-    username: '',
-    email: '',
-    password: '',
-  };
-
+  username = '';
+  email = '';
+  password = '';
+  rememberMe = false;
   errorMessages: string[] = [];
   successMessage = '';
 
-  constructor(
-    private http: HttpClient,
-    private auth: Auth,
-    private router: Router,
-    private ngZone: NgZone
-  ) {}
+  constructor(private auth: Auth, private router: Router, private ngZone: NgZone) {}
 
-  onSubmit() {
-    this.http.post<any>('http://localhost:8080/api/users/register', this.registerData).subscribe({
+  onSubmit(): void {
+    this.auth.register({ username: this.username, email: this.email, password: this.password }).subscribe({
       next: (res) => {
-  if (res.token) {
-    this.auth.saveToken(res.token, true);
-    this.successMessage = "Inscription réussie !";
-    this.errorMessages = [];
-
-setTimeout(() => {
-  this.ngZone.run(() => {
-    this.router.navigate(['/tasks']);
-  });
-}, 100); // <= 100ms permet de s'assurer que l'intercepteur a accès au token
-
-  } else {
-    this.errorMessages = ["Inscription réussie mais aucun token reçu."];
-  }
-}
-,
-      error: (err) => {
-        this.successMessage = '';
-        if (typeof err.error === 'string') {
-          this.errorMessages = [err.error];
-        } else if (Array.isArray(err.error)) {
-          this.errorMessages = err.error;
-        } else if (typeof err.error === 'object') {
-          this.errorMessages = (Object.values(err.error).flat() as string[]);
-        } else {
-          this.errorMessages = ['Une erreur inconnue est survenue.'];
+        if (res.token) {
+          this.auth.saveToken(res.token, this.rememberMe);
+          this.successMessage = 'Inscription réussie !';
+          this.errorMessages = [];
+          this.ngZone.run(() => this.router.navigate(['/tasks']));
         }
       },
+      error: (err) => {
+        this.successMessage = '';
+        this.errorMessages = ['Erreur lors de l’inscription.'];
+      }
     });
   }
 }

@@ -10,7 +10,6 @@ export interface TaskRaw {
   isEditing?: boolean;
 }
 
-// Type local avec dueDate en Date
 export interface Task extends Omit<TaskRaw, 'dueDate'> {
   dueDate: Date | null;
 }
