@@ -45,7 +45,7 @@ export class Tasks implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.auth.isLoggedIn()) {
+if (!this.auth.isLoggedIn() || !this.auth.isTokenAvailable()) {
       console.warn('Utilisateur non connecté');
       return;
     }

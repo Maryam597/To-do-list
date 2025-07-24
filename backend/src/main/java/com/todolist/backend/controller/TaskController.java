@@ -104,7 +104,7 @@ private TaskDTO convertToDTO(Task task) {
         task.isCompleted(),
         task.getUser() != null ? task.getUser().getUsername() : null,
         task.getCreatedAt(),
-        task.getDueDate()   // ✅ bien inclure ceci
+        task.getDueDate()   
     );
 }
 

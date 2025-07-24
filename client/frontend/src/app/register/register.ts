@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,20 +32,32 @@ export class Register {
   errorMessages: string[] = [];
   successMessage = '';
 
-  constructor(private http: HttpClient, private auth: Auth, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private auth: Auth,
+    private router: Router,
+    private ngZone: NgZone
+  ) {}
 
   onSubmit() {
     this.http.post<any>('http://localhost:8080/api/users/register', this.registerData).subscribe({
       next: (res) => {
-        if (res.token) {
-          this.auth.saveToken(res.token, true); // Enregistre le token avec le service Auth
-          this.successMessage = "Inscription réussie !";
-          this.errorMessages = [];
-          this.router.navigate(['/tasks']); // Redirige vers la page des tâches
-        } else {
-          this.errorMessages = ["Inscription réussie mais aucun token reçu."];
-        }
-      },
+  if (res.token) {
+    this.auth.saveToken(res.token, true);
+    this.successMessage = "Inscription réussie !";
+    this.errorMessages = [];
+
+setTimeout(() => {
+  this.ngZone.run(() => {
+    this.router.navigate(['/tasks']);
+  });
+}, 100); // <= 100ms permet de s'assurer que l'intercepteur a accès au token
+
+  } else {
+    this.errorMessages = ["Inscription réussie mais aucun token reçu."];
+  }
+}
+,
       error: (err) => {
         this.successMessage = '';
         if (typeof err.error === 'string') {

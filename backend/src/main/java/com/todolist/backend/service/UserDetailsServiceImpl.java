@@ -14,16 +14,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
+@Override
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    System.out.println("Looking for user by email: '" + email + "'");
     User user = userRepository.findByEmail(email)
-    .orElseThrow(() -> new UsernameNotFoundException("User not found" + email));
-
+        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
     return new org.springframework.security.core.userdetails.User(
         user.getEmail(),
         user.getPassword(),
         Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
-        );
-        
-    }
+    );
+}
 }

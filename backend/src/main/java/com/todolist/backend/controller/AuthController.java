@@ -61,8 +61,8 @@ public class AuthController {
             return ResponseEntity.status(401).body("Token manquant ou invalide");
         }
         
-        String username = jwtService.extractUsername(token);
-        return ResponseEntity.ok("Connecté en tant que " + username);
+        String email = jwtService.extractEmail(token);
+        return ResponseEntity.ok("Connecté en tant que " + email);
     }
     
     @Data

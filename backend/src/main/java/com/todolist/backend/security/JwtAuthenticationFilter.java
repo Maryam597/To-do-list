@@ -42,22 +42,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         final String token = authHeader.substring(7);
-        try {
-            final String userEmail = jwtService.extractUsername(token);
 
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userEmail);
+        try {
+            String email = jwtService.extractEmail(token);
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                email = email.trim().toLowerCase();
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(email);
 
                 if (jwtService.isTokenValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
         } catch (Exception e) {
             logger.warn("JWT processing failed: {}", e.getMessage());
-            // Optionnel : tu peux définir un statut 401 ici ou laisser le filtre suivant gérer ça
+            // Optionnel : tu peux aussi envoyer une réponse avec un code 401 ici si souhaité.
         }
 
         filterChain.doFilter(request, response);

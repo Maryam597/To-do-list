@@ -66,7 +66,7 @@ public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequest request)
 
     User savedUser = userService.saveUser(user);
 
-    String token = jwtService.generateToken(savedUser.getUsername());
+    String token = jwtService.generateToken(savedUser.getEmail());
 
     // 🔄 Remplace Map par AuthResponse
     AuthResponse response = new AuthResponse(token, savedUser.getUsername(), savedUser.getEmail());
