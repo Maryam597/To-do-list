@@ -1,5 +1,6 @@
 package com.todolist.backend.controller;
 
+import com.todolist.backend.dto.AuthResponse;
 import com.todolist.backend.dto.LoginRequest;
 import com.todolist.backend.dto.RegisterRequest;
 import com.todolist.backend.model.User;
@@ -61,20 +62,16 @@ public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequest request)
     user.setUsername(request.getUsername());
     user.setEmail(request.getEmail());
     user.setPassword(request.getPassword());
-    user.setRole(Role.USER);
+    user.setRole(com.todolist.backend.model.Role.USER);
 
     User savedUser = userService.saveUser(user);
 
-    // Génére un token JWT en utilisant le username (ou email)
     String token = jwtService.generateToken(savedUser.getUsername());
 
-    // Prépare la réponse avec le token
-    Map<String, Object> responseBody = new HashMap<>();
-    responseBody.put("user", savedUser);
-    responseBody.put("token", token);
+    // 🔄 Remplace Map par AuthResponse
+    AuthResponse response = new AuthResponse(token, savedUser.getUsername(), savedUser.getEmail());
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+    return ResponseEntity.status(201).body(response);
 }
-
 
 }

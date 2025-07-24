@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { Auth } from '../auth/auth';
 
 @Component({
   selector: 'app-register',
@@ -31,18 +32,16 @@ export class Register {
   errorMessages: string[] = [];
   successMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private auth: Auth, private router: Router) {}
 
   onSubmit() {
     this.http.post<any>('http://localhost:8080/api/users/register', this.registerData).subscribe({
       next: (res) => {
         if (res.token) {
-          localStorage.setItem('authToken', res.token);
+          this.auth.saveToken(res.token, true); // Enregistre le token avec le service Auth
           this.successMessage = "Inscription réussie !";
           this.errorMessages = [];
-
-          // Redirection vers la page des tâches
-          this.router.navigate(['/tasks']);
+          this.router.navigate(['/tasks']); // Redirige vers la page des tâches
         } else {
           this.errorMessages = ["Inscription réussie mais aucun token reçu."];
         }
@@ -54,8 +53,7 @@ export class Register {
         } else if (Array.isArray(err.error)) {
           this.errorMessages = err.error;
         } else if (typeof err.error === 'object') {
-          // Afficher chaque message dans un tableau d'erreurs
-this.errorMessages = (Object.values(err.error).flat() as string[]);
+          this.errorMessages = (Object.values(err.error).flat() as string[]);
         } else {
           this.errorMessages = ['Une erreur inconnue est survenue.'];
         }
