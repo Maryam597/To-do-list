@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Tasks } from './tasks/tasks';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; 
@@ -39,12 +39,11 @@ export class AppComponent implements OnInit {
     }
   }
 
-    logout() {
+  logout() {
     this.auth.logout();
   }
 
   isLoggedIn(): boolean {
     return this.auth.isLoggedIn();
   }
-
 }

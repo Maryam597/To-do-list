@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
-    importProvidersFrom(FormsModule) // 👈 impératif pour ngModel avec standalone
+    importProvidersFrom(FormsModule) 
   ]
 };
