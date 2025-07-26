@@ -1,10 +1,15 @@
 import { Component, NgZone } from '@angular/core';
 import { Auth } from '../auth';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.html',
+  standalone: true,
+  imports: [
+    FormsModule]
+
 })
 export class Login {
   email = '';

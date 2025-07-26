@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class Auth {
+  isTokenAvailable() : boolean {
+  return !!(localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token'));
+  }
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}

@@ -2,13 +2,12 @@
   <h2>🌱 Inscription</h2>
 
   <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-
     <mat-form-field appearance="fill">
       <mat-label>Nom d'utilisateur</mat-label>
       <input
         matInput
         name="username"
-        [(ngModel)]="registerData.username"
+        [(ngModel)]="username"
         required
       />
     </mat-form-field>
@@ -19,7 +18,7 @@
         matInput
         type="email"
         name="email"
-        [(ngModel)]="registerData.email"
+        [(ngModel)]="email"
         required
       />
     </mat-form-field>
@@ -30,10 +29,14 @@
         matInput
         type="password"
         name="password"
-        [(ngModel)]="registerData.password"
+        [(ngModel)]="password"
         required
       />
     </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="rememberMe" name="rememberMe">
+      Se souvenir de moi
+    </mat-checkbox>
 
     <button
       type="submit"
@@ -53,9 +56,10 @@
       J'ai déjà un compte
     </button>
 
-<div *ngIf="errorMessages.length > 0" class="error-messages">
-  <p class="error" *ngFor="let msg of errorMessages">{{ msg }}</p>
-</div>
+    <div *ngIf="errorMessages.length > 0" class="error-messages">
+      <p class="error" *ngFor="let msg of errorMessages">{{ msg }}</p>
+    </div>
+
     <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
   </form>
 </div>

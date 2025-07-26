@@ -1,4 +1,4 @@
-.register-container {
+.register-container { 
   max-width: 400px;
   margin: 0 auto;
   padding: 2rem;
@@ -13,9 +13,19 @@
     text-align: center;
   }
 
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
   mat-form-field {
     width: 100%;
     margin-bottom: 1rem;
+  }
+
+  mat-checkbox {
+    margin: 1rem 0;
+    color: #4d6d2d;
   }
 
   button {
@@ -30,19 +40,25 @@
     text-decoration: underline;
     margin-top: 1rem;
     display: block;
+    text-align: center;
   }
 
-  .error {
-    color: #c0392b;
+  .error-messages {
     margin-top: 1rem;
+
+    .error {
+      color: #c0392b;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
   }
 
   .success {
     color: #27ae60;
     margin-top: 1rem;
+    text-align: center;
   }
 }
-
 
 .btn {
   padding: 0.7rem 1.4rem;

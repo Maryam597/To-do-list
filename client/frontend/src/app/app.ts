@@ -24,7 +24,7 @@ import { Observable } from 'rxjs';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class AppComponent implements OnInit {
+export class App implements OnInit {
   isLoggedIn$!: Observable<boolean>;
 
   constructor(
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn$ = this.auth.isLoggedIn$;
+    this.isLoggedIn = this.auth.isLoggedIn;
     if (!this.auth.isLoggedIn()) {
       this.router.navigate(['/']);
     }
